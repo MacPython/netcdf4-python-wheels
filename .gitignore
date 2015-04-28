@@ -1,0 +1,6 @@
+*.pyc
+tmp_for_test/
+working/
+build/
+downloads/
+.travis.sh
