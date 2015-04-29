@@ -5,7 +5,7 @@ env:
   - BUILD_COMMIT='latest-tag'  # comment out to build version in submodule
   - REPO_DIR=netcdf4-python
   - SZIP_VERSION=2.1
-  - HDF5_VERSION=1.8.13
+  - HDF5_VERSION=1.8.14
   - NETCDF_VERSION=4.3.3.1
   - NETCDF_CXX_VERSION=4.2.1
   matrix:
