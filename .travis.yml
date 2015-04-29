@@ -30,14 +30,12 @@ install:
   - delocate-wheel dist/*.whl # copies library dependencies into wheel
   - delocate-addplat --rm-orig -x 10_9 -x 10_10 dist/*.whl
   - pip install dist/*.whl
-  - cd ..
 script:
-  # install dependencies for tests e.g - pip install nose
-  - mkdir tmp_for_test
-  - cd tmp_for_test
+  - cd test
   # Run the tests
+  - python run_all.py
   - cd ..
-before_deploy: cd $REPO_DIR
+before_deploy: cd $REPO_DIR/dist
 deploy:
   provider: cloudfiles
   username: travis-worker
