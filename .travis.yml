@@ -32,8 +32,8 @@ install:
   - pip install dist/*.whl
 script:
   - cd test
-  # Upgrade to latest numpy for testing
-  - pip install -U numpy
+  # Set numpy version for testing
+  - pip install numpy==1.9.0
   # Run the tests
   - python run_all.py
   - cd ..
