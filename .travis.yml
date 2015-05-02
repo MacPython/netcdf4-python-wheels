@@ -33,8 +33,6 @@ install:
   - pip install dist/*.whl
 script:
   - cd test
-  # Set numpy version for testing
-  - pip install numpy==1.8.2
   # Run the tests
   - python run_all.py
   - cd ..
