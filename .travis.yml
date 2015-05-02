@@ -2,7 +2,7 @@ language:
 - objective-c
 env:
   global:
-  - BUILD_COMMIT='latest-tag'  # comment out to build version in submodule
+  # - BUILD_COMMIT='latest-tag'  # comment out to build version in submodule
   - REPO_DIR=netcdf4-python
   - SZIP_VERSION=2.1
   - HDF5_VERSION=1.8.14
@@ -16,6 +16,7 @@ install:
   - source terryfy/travis_tools.sh
   - get_python_environment macpython $VERSION venv
   - pip install delocate numpy==$NUMPY_VERSION
+  - pip install cython
   - source terryfy/library_installers.sh
   - clean_builds
   - standard_install szip $SZIP_VERSION .tar.gz szip- --enable-encoding=no
