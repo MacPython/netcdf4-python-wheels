@@ -31,6 +31,8 @@ install:
   - delocate-wheel dist/*.whl # copies library dependencies into wheel
   - delocate-addplat --rm-orig -x 10_9 -x 10_10 dist/*.whl
   - pip install dist/*.whl
+  # Remove built libraries to make sure wheel is using own libraries
+  - clean_builds
 script:
   - cd test
   # Run the tests
