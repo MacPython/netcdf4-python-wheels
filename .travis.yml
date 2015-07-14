@@ -22,9 +22,9 @@ install:
   - clean_builds
   - standard_install szip $SZIP_VERSION .tar.gz szip- --enable-encoding=no
   - standard_install hdf5 $HDF5_VERSION .tar.bz2 hdf5- --with-szlib=$BUILD_PREFIX
-  - standard_install netcdf-c $NETCDF_VERSION .tar.gz netcdf-
   # Separate i386 and x86_64 builds, followed by lipo fuse
   - dual_arch_install curl $LIBCURL_VERSION .tar.gz curl- --with-darwinssl
+  - standard_install netcdf-c $NETCDF_VERSION .tar.gz netcdf-
   - if [ -n "$BUILD_COMMIT" ]; then
         checkout_commit $REPO_DIR $BUILD_COMMIT;
     fi
