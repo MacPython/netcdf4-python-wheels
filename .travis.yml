@@ -8,6 +8,7 @@ env:
   - HDF5_VERSION=1.8.14
   - NETCDF_VERSION=4.3.3.1
   - NETCDF_CXX_VERSION=4.2.1
+  - LIBCURL_VERSION=7.43.0
   matrix:
   - VERSION=2.7.9 NUMPY_VERSION=1.7.1
   - VERSION=3.3.5 NUMPY_VERSION=1.7.1
@@ -22,6 +23,8 @@ install:
   - standard_install szip $SZIP_VERSION .tar.gz szip- --enable-encoding=no
   - standard_install hdf5 $HDF5_VERSION .tar.bz2 hdf5- --with-szlib=$BUILD_PREFIX
   - standard_install netcdf-c $NETCDF_VERSION .tar.gz netcdf-
+  # Separate i386 and x86_64 builds, followed by lipo fuse
+  - dual_arch_install curl $LIBCURL_VERSION .tar.gz curl- --with-darwinssl
   - if [ -n "$BUILD_COMMIT" ]; then
         checkout_commit $REPO_DIR $BUILD_COMMIT;
     fi
