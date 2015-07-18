@@ -20,11 +20,27 @@ install:
   - pip install cython
   - source terryfy/library_installers.sh
   - clean_builds
+  # Build for 32-bit
+  - set_32_prefix
   - standard_install szip $SZIP_VERSION .tar.gz szip- --enable-encoding=no
   - standard_install hdf5 $HDF5_VERSION .tar.bz2 hdf5- --with-szlib=$BUILD_PREFIX
-  # Separate i386 and x86_64 builds, followed by lipo fuse
-  - dual_arch_install curl $LIBCURL_VERSION .tar.gz curl- --with-darwinssl
+  - standard_install curl $LIBCURL_VERSION .tar.gz curl- --with-darwinssl
   - standard_install netcdf-c $NETCDF_VERSION .tar.gz netcdf-
+  # Clean sources and rebuild for 64-bit
+  - set_64_prefix
+  - rm -rf $SRC_PREFIX
+  - mkdir $SRC_PREFIX
+  - standard_install szip $SZIP_VERSION .tar.gz szip- --enable-encoding=no
+  - standard_install hdf5 $HDF5_VERSION .tar.bz2 hdf5- --with-szlib=$BUILD_PREFIX
+  - standard_install curl $LIBCURL_VERSION .tar.gz curl- --with-darwinssl
+  - standard_install netcdf-c $NETCDF_VERSION .tar.gz netcdf-
+  - set_dual_prefix
+  # Fuse 32 and 64-bit libraries
+  - cp -a $BUILD_PREFIX_64/* $BUILD_PREFIX
+  - python $TERRYFY_DIR/fuse_suff_real_libs.py
+        $BUILD_PREFIX/lib
+        $BUILD_PREFIX_32/lib
+        $BUILD_PREFIX_64/lib
   - if [ -n "$BUILD_COMMIT" ]; then
         checkout_commit $REPO_DIR $BUILD_COMMIT;
     fi
