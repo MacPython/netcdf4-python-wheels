@@ -41,6 +41,11 @@ install:
         $BUILD_PREFIX/lib
         $BUILD_PREFIX_32/lib
         $BUILD_PREFIX_64/lib
+  # Point pkgconfig at fused library location
+  - perl -pi -e "s#$BUILD_PREFIX_64#$BUILD_PREFIX#g" $BUILD_PREFIX/lib/pkgconfig/*
+  # Delete single-arch builds for safety
+  - rm -rf $BUILD_CONFIG_32 $BUILD_CONFIG_64
+  # Checkout named commit and build wheel
   - if [ -n "$BUILD_COMMIT" ]; then
         checkout_commit $REPO_DIR $BUILD_COMMIT;
     fi
@@ -56,6 +61,8 @@ script:
   - cd test
   # Run the tests
   - python run_all.py
+  # Run tests for 32-bit
+  - arch -i386 python run_all.py
   - cd ..
 before_deploy: cd dist
 deploy:
