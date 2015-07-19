@@ -41,8 +41,9 @@ install:
         $BUILD_PREFIX/lib
         $BUILD_PREFIX_32/lib
         $BUILD_PREFIX_64/lib
-  # Point pkgconfig at fused library location
+  # Point pkgconfig and nc-config at fused library location
   - perl -pi -e "s#$BUILD_PREFIX_64#$BUILD_PREFIX#g" $BUILD_PREFIX/lib/pkgconfig/*
+  - perl -pi -e "s#$BUILD_PREFIX_64#$BUILD_PREFIX#g" $BUILD_PREFIX/bin/*
   # Delete single-arch builds for safety
   - rm -rf $BUILD_CONFIG_32 $BUILD_CONFIG_64
   # Checkout named commit and build wheel
