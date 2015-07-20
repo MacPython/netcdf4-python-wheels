@@ -36,8 +36,14 @@ install:
   - standard_install netcdf-c $NETCDF_VERSION .tar.gz netcdf-
   - set_dual_prefix
   # Reset library linking to point to local directory
-  - delocate-path $BUILD_PREFIX_32/lib -L $BUILD_PREFIX_32/lib
-  - delocate-path $BUILD_PREFIX_64/lib -L $BUILD_PREFIX_64/lib
+  - python $TERRYFY_DIR/repath_lib_names.py
+        $BUILD_PREFIX_32/lib
+        $BUILD_PREFIX/lib
+        $BUILD_PREFIX_32/lib/*
+  - python $TERRYFY_DIR/repath_lib_names.py
+        $BUILD_PREFIX_64/lib
+        $BUILD_PREFIX/lib
+        $BUILD_PREFIX_64/lib/*
   # Fuse 32 and 64-bit libraries
   - cp -a $BUILD_PREFIX_64/* $BUILD_PREFIX
   - python $TERRYFY_DIR/fuse_suff_real_libs.py
