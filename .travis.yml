@@ -2,7 +2,7 @@ language:
 - objective-c
 env:
   global:
-  # - BUILD_COMMIT='latest-tag'  # comment out to build version in submodule
+  - BUILD_COMMIT='latest-tag'  # comment out to build version in submodule
   - REPO_DIR=netcdf4-python
   - SZIP_VERSION=2.1
   - HDF5_VERSION=1.8.14
@@ -10,7 +10,7 @@ env:
   - NETCDF_CXX_VERSION=4.2.1
   - LIBCURL_VERSION=7.43.0
   matrix:
-  - VERSION=2.7.9 NUMPY_VERSION=1.7.1
+  - VERSION=2.7.10 NUMPY_VERSION=1.7.1
   - VERSION=3.3.5 NUMPY_VERSION=1.7.1
   - VERSION=3.4.3 NUMPY_VERSION=1.7.1
 install:
@@ -20,6 +20,10 @@ install:
   - pip install cython
   - source terryfy/library_installers.sh
   - clean_builds
+  # We have to build separately for 32 and 64 bit because libcurl headers
+  # set the pointer size, and so libcurl won't do dual-arch compile, and
+  # netcdf can't compile and link against these headers in dual arch.  So,
+  # build the whole stack in 32 and 64 bit, fuse them after.
   # Build for 32-bit
   - set_32_prefix
   - standard_install szip $SZIP_VERSION .tar.gz szip- --enable-encoding=no
@@ -69,9 +73,9 @@ install:
   - clean_builds
 script:
   - cd test
-  # Run the tests
+  # Run the tests in default 64-bit mode
   - python run_all.py
-  # Run tests for 32-bit
+  # Run tests for 32-bit Python.org Python
   - arch -i386 python run_all.py
   - cd ..
 before_deploy: cd dist
