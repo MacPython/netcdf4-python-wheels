@@ -17,6 +17,11 @@ env:
 install:
   - source terryfy/travis_tools.sh
   - get_python_environment macpython $VERSION venv
+  # Use clang to avoid warnings on Python 3.5
+  - export CC=clang
+  - export CXX=clang++
+  # Update to latest wheel version for Python 3.5
+  - pip install -U wheel
   - pip install delocate numpy==$NUMPY_VERSION
   - pip install cython
   - source terryfy/library_installers.sh
