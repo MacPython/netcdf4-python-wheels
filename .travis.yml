@@ -13,6 +13,7 @@ env:
   - VERSION=2.7.10 NUMPY_VERSION=1.7.1
   - VERSION=3.3.5 NUMPY_VERSION=1.7.1
   - VERSION=3.4.3 NUMPY_VERSION=1.7.1
+  - VERSION=3.5.0 NUMPY_VERSION=1.7.1
 install:
   - source terryfy/travis_tools.sh
   - get_python_environment macpython $VERSION venv
@@ -73,6 +74,10 @@ install:
   - clean_builds
 script:
   - cd test
+  # Python 3.5 needs more recent numpy
+  - if [ -n "$(pyver_ge $VERSION 3.5.0)" ]; then
+    pip install --upgrade numpy;
+    fi
   # Run the tests in default 64-bit mode
   - python run_all.py
   # Run tests for 32-bit Python.org Python
