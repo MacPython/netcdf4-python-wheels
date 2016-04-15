@@ -84,9 +84,9 @@ script:
     pip install --upgrade numpy;
     fi
   # Run the tests in default 64-bit mode
-  - python run_all.py
+  #- python run_all.py
   # Run tests for 32-bit Python.org Python
-  - arch -i386 python run_all.py
+  #- arch -i386 python run_all.py
   - cd ..
 before_deploy:
   - cd dist
