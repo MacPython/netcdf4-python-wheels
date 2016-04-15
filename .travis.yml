@@ -2,7 +2,7 @@ language:
 - objective-c
 env:
   global:
-  #- BUILD_COMMIT='latest-tag'  # comment out to build version in submodule
+  - BUILD_COMMIT='latest-tag'  # comment out to build version in submodule
   - REPO_DIR=netcdf4-python
   - SZIP_VERSION=2.1
   - HDF5_VERSION=1.8.14
@@ -84,9 +84,9 @@ script:
     pip install --upgrade numpy;
     fi
   # Run the tests in default 64-bit mode
-  #- python run_all.py
+  - python run_all.py
   # Run tests for 32-bit Python.org Python
-  #- arch -i386 python run_all.py
+  - arch -i386 python run_all.py
   - cd ..
 before_deploy:
   - cd dist
