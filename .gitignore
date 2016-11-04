@@ -2,7 +2,7 @@
 tmp_for_test/
 working/
 build/
-build32/
-build64/
 downloads/
 .travis.sh
+arch_tmp/
+*-stamp
