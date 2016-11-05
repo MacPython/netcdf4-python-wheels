@@ -11,7 +11,9 @@ function build_libs {
 
 function run_tests {
     # Runs tests on installed distribution from an empty directory
-    (cd ../netcdf4-python/test &&
-        python run_all.py &&
-        if [ -n "$IS_OSX" ]; then arch -i386 python run_all.py; fi)
+    cp ../netcdf4-python/test/* .
+    python run_all.py
+    if [ -n "$IS_OSX" ]; then
+        arch -i386 python run_all.py
+    fi
 }
