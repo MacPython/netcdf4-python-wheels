@@ -6,3 +6,4 @@ downloads/
 .travis.sh
 arch_tmp/
 *-stamp
+test/
