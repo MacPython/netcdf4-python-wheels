@@ -4,8 +4,8 @@ env:
         - BUILD_COMMIT=v1.3.0rel
         - PLAT=x86_64
         - UNICODE_WIDTH=32
-        - NP_BUILD_DEP=1.7.1
-        - NP_TEST_DEP=1.7.1
+        - NP_BUILD_DEP=1.9.0
+        - NP_TEST_DEP=1.9.0
         - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
         # Following generated with
         # travis encrypt -r MacPython/netcdf4-python-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
