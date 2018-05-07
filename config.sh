@@ -15,7 +15,4 @@ function run_tests {
     # Runs tests on installed distribution from an empty directory
     cp ../netcdf4-python/test/* .
     python run_all.py
-    if [ -n "$IS_OSX" ]; then
-        arch -i386 python run_all.py
-    fi
 }
