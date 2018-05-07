@@ -11,6 +11,10 @@ function build_libs {
     build_netcdf
 }
 
+function pip_opts {
+    echo "--find-links https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com"
+}
+
 function run_tests {
     # Runs tests on installed distribution from an empty directory
     cp ../netcdf4-python/test/* .
