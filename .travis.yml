@@ -87,7 +87,7 @@ matrix:
 before_install:
     - BUILD_DEPENDS="numpy==$NP_BUILD_DEP Cython"
     # Tests need Cython because run_all.py wants to print out version
-    - TEST_DEPENDS="numpy==$NP_TEST_DEP nose Cython"
+    - TEST_DEPENDS="numpy==$NP_TEST_DEP nose Cython wheel==0.31.1""
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
     - before_install
