@@ -1,7 +1,7 @@
 # Define custom utilities
 # Test for OSX with [ -n "$IS_OSX" ]
 # Uncomment to disable net tests - the server is sometimes down
-# export NO_NET=1
+export NO_NET=1
 
 source h5py-wheels/config.sh
 
