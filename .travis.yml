@@ -105,7 +105,7 @@ matrix:
         - NP_TEST_DEP="1.17.3"
 
 before_install:
-    - BUILD_DEPENDS="numpy==$NP_BUILD_DEP Cython"
+    - BUILD_DEPENDS="numpy==$NP_BUILD_DEP Cython setuptools>=18.0"
     # Tests need Cython because run_all.py wants to print out version
     - TEST_DEPENDS="numpy==$NP_TEST_DEP nose Cython"
     - source multibuild/common_utils.sh
