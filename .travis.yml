@@ -133,7 +133,7 @@ deploy:
   api_key:
     secure: RO/s+OINpPVbAjgiIsXBa0wVOJSv142TIOEsPJ6nAIxsfvKiqRm7+2B1BENVFyu3m5hwg8WUDQauhe1emP2LDhGKrPw+yBwMc5bGalEYVeSVBI/by57VSyKGSNilOBkkzjtLJSts2HauHDkQaaQPU3UsIP+fQpppfYLvShHbp9A=
   file_glob: true
-  file: "${TRAVIS_BUILD_DIR}/${WHEEL_SDIR}/*.whl"
+  file: "${TRAVIS_BUILD_DIR}/wheelhouse/*.whl"
   skip_cleanup: true
   on:
     repo: MacPython/netcdf4-python-wheels
