@@ -119,10 +119,25 @@ install:
 script:
     - install_run $PLAT
 
-after_success:
-    # Upload wheels to Rackspace container
-    - pip install wheelhouse-uploader
-    - python -m wheelhouse_uploader upload --local-folder
-          ${TRAVIS_BUILD_DIR}/wheelhouse/
-          --no-update-index
-          wheels
+#after_success:
+#    # Upload wheels to Rackspace container
+#    - pip install wheelhouse-uploader
+#    - python -m wheelhouse_uploader upload --local-folder
+#          ${TRAVIS_BUILD_DIR}/wheelhouse/
+#          --no-update-index
+#          wheels
+
+deploy:
+  release: $(BUILD_COMMIT)
+  description: 'netcdf4-python $(BUILD_COMMIT)'
+  provider: GitHub
+  auth_token:
+    secure: RO/s+OINpPVbAjgiIsXBa0wVOJSv142TIOEsPJ6nAIxsfvKiqRm7+2B1BENVFyu3m5hwg8WUDQauhe1emP2LDhGKrPw+yBwMc5bGalEYVeSVBI/by57VSyKGSNilOBkkzjtLJSts2HauHDkQaaQPU3UsIP+fQpppfYLvShHbp9A=
+  artifact: dist/*.whl
+  draft: false
+  prerelease: false
+  #on:
+    #branch: release                 # release from this branch only
+    #APPVEYOR_REPO_TAG: true          # deploy on tag push only
+#  api-key:
+#    secure: RO/s+OINpPVbAjgiIsXBa0wVOJSv142TIOEsPJ6nAIxsfvKiqRm7+2B1BENVFyu3m5hwg8WUDQauhe1emP2LDhGKrPw+yBwMc5bGalEYVeSVBI/by57VSyKGSNilOBkkzjtLJSts2HauHDkQaaQPU3UsIP+fQpppfYLvShHbp9A=
