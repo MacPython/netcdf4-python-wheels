@@ -26,14 +26,3 @@ function run_tests {
     python run_all.py
 }
 
-function build_netcdf {
-    if [ -e netcdf-stamp ]; then return; fi
-    build_hdf5
-    build_curl
-    fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
-    (cd netcdf-c-${NETCDF_VERSION} \
-        && ./configure --prefix=$BUILD_PREFIX --enable-dap --disable-utilities \
-        && make -j4 \
-        && make install)
-    touch netcdf-stamp
-}
