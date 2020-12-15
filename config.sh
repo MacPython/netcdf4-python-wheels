@@ -5,7 +5,8 @@ export NO_NET=1
 
 # Compile libs for macOS 10.9 or later
 export MACOSX_DEPLOYMENT_TARGET="10.9"
-export NETCDF_VERSION="4.6.3"
+export NETCDF_VERSION="4.7.4"
+export HDF5_VERSION="1.12.0"
 
 source h5py-wheels/config.sh
 
