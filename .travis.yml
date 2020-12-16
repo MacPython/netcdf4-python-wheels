@@ -18,6 +18,11 @@ sudo: required
 dist: focal
 services: docker
 
+addons:
+  apt:
+    packages:
+      - cmake
+
 matrix:
   #exclude:
   #    # Exclude the default Python 3.5 build
