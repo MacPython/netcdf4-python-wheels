@@ -32,9 +32,9 @@ function build_netcdf_cmake {
     build_curl
     local cmake=$(get_modern_cmake)
     fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
-    (   mkdir build \ 
+    (mkdir build \ 
 	&& cd build \
-        && $cmake -DCMAKE_PREFIX_PATH=$BUILD_PREFIX -DENABLE_DAP=ON ../netcdf-c-${NETCDF_VERSION} \
+        && $cmake -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX -DENABLE_DAP=ON ../netcdf-c-${NETCDF_VERSION} \
         && make -j4 \
         && make install)
     touch netcdf-stamp
