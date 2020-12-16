@@ -30,9 +30,10 @@ function build_netcdf_cmake {
     if [ -e netcdf-stamp ]; then return; fi
     build_hdf5
     build_curl
+    local cmake=$(get_modern_cmake)
     fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
     (cd netcdf-c-${NETCDF_VERSION} \
-        && cmake -DCMAKE_PREFIX_PATH=$BUILD_PREFIX -DENABLE_DAP=ON \
+        && $cmake -DCMAKE_PREFIX_PATH=$BUILD_PREFIX -DENABLE_DAP=ON \
         && make -j4 \
         && make install)
     touch netcdf-stamp
