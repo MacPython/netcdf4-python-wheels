@@ -25,3 +25,4 @@ function run_tests {
     cp ../netcdf4-python/test/* .
     python run_all.py
 }
+
