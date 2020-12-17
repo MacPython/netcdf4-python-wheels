@@ -5,7 +5,7 @@ export NO_NET=1
 
 # Compile libs for macOS 10.9 or later
 export MACOSX_DEPLOYMENT_TARGET="10.9"
-export NETCDF_VERSION="4.7.0"
+export NETCDF_VERSION="4.7.4"
 export HDF5_VERSION="1.12.0"
 
 source h5py-wheels/config.sh
@@ -26,17 +26,14 @@ function run_tests {
     python run_all.py
 }
 
-#function build_netcdf_cmake {
-#    if [ -e netcdf-stamp ]; then return; fi
-#    build_hdf5
-#    build_curl
-#    #local cmake=$(get_modern_cmake) 
-#    local cmake=cmake
-#    $cmake --version
-#    fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
-#    (cd netcdf-c-${NETCDF_VERSION} \
-#        && $cmake -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX -DENABLE_DAP=ON . \
-#        && make -j4 \
-#        && make install)
-#    touch netcdf-stamp
-#}
+function build_netcdf {
+    if [ -e netcdf-stamp ]; then return; fi
+    build_hdf5
+    build_curl
+    fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
+    (cd netcdf-c-${NETCDF_VERSION} \
+        && LIBS="-lsz -lhdf5_hl -lhdf5 -ldl -lz -lcurl -lm" ./configure --prefix=$BUILD_PREFIX --enable-dap \
+        && make -j4 \
+        && make install)
+    touch netcdf-stamp
+}
