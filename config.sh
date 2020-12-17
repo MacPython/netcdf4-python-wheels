@@ -26,6 +26,7 @@ function run_tests {
     python run_all.py
 }
 
+#       && export LIBS="-lm -ldl -lcurl -lhdf5_hl -lhdf5 -lm -lz"
 function build_netcdf2 {
     if [ -e netcdf-stamp ]; then return; fi
     build_hdf5
@@ -33,8 +34,8 @@ function build_netcdf2 {
     fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
     echo "build_netcdf2"
     (cd netcdf-c-${NETCDF_VERSION} \
-        && export LIBS="-lm -lhdf5_hl -lhdf5 -ldl -lz -lcurl -lm"
-        && ./configure --prefix=$BUILD_PREFIX --enable-dap \
+        && export LIBS="-lhdf5_hl -lhdf5 -lm -lz" \ 
+        && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
         && make -j4 \
         && make install)
     touch netcdf-stamp
