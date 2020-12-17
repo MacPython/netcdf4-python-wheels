@@ -8,7 +8,7 @@ env:
         - NP_TEST_DEP=1.17.3
         - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
         # manylinux version to build (1, 2010 or 2014)
-        - MB_ML_VER=2010
+        - MB_ML_VER=1
         # Following generated with
         # travis encrypt -r MacPython/netcdf4-python-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
         - secure:
