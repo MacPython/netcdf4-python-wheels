@@ -33,6 +33,7 @@ function build_netcdf2 {
     fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
     echo "Using C compiler: $(which gcc)"
     echo "gcc version: `gcc --version`"
+    export CFLAGS="-std=c99 -pedantic-errors -fextended-identifiers -Wl,-strip-all"
     (cd netcdf-c-${NETCDF_VERSION} \
         && ./configure --prefix=$BUILD_PREFIX --enable-dap \
         && make -j4 \
