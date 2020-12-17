@@ -26,7 +26,7 @@ function run_tests {
     python run_all.py
 }
 
-function build_netcdf {
+function build_netcdf2 {
     if [ -e netcdf-stamp ]; then return; fi
     build_hdf5
     build_curl
