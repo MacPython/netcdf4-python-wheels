@@ -7,15 +7,17 @@ export NO_NET=1
 export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.7.4"
 export HDF5_VERSION="1.12.0"
+export MB_ML_VER=2014
 
 source h5py-wheels/config.sh
 
 function build_libs {
     build_hdf5
     build_curl
-    if [ -z "$IS_OSX" ]; then
-       export CFLAGS="-std=gnu99 -Wl,-strip-all"
-    fi
+# only needed for MB_ML_VER=1
+#   if [ -z "$IS_OSX" ]; then
+#      export CFLAGS="-std=gnu99 -Wl,-strip-all"
+#   fi
     build_netcdf
 }
 
