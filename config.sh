@@ -31,9 +31,10 @@ function build_netcdf2 {
     build_hdf5
     build_curl
     fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
-    echo "Using C compiler: $(which gcc)"
-    echo "gcc version: `gcc --version`"
-    export CFLAGS="-std=c99 -pedantic-errors -fextended-identifiers -Wl,-strip-all"
+    if [ -z "$IS_OSX" ]; then
+       #export CFLAGS="-std=c99 -pedantic-errors -fextended-identifiers -Wl,-strip-all"
+       export CFLAGS="-std=c99 -Wl,-strip-all"
+    fi
     (cd netcdf-c-${NETCDF_VERSION} \
         && ./configure --prefix=$BUILD_PREFIX --enable-dap \
         && make -j4 \
