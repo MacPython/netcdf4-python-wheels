@@ -13,7 +13,10 @@ source h5py-wheels/config.sh
 function build_libs {
     build_hdf5
     build_curl
-    build_netcdf2
+    if [ -z "$IS_OSX" ]; then
+       export CFLAGS="-std=gnu99 -Wl,-strip-all"
+    fi
+    build_netcdf
 }
 
 function pip_opts {
@@ -24,19 +27,4 @@ function run_tests {
     # Runs tests on installed distribution from an empty directory
     cp ../netcdf4-python/test/* .
     python run_all.py
-}
-
-function build_netcdf2 {
-    if [ -e netcdf-stamp ]; then return; fi
-    build_hdf5
-    build_curl
-    fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
-    if [ -z "$IS_OSX" ]; then
-       export CFLAGS="-std=gnu99 -Wl,-strip-all"
-    fi
-    (cd netcdf-c-${NETCDF_VERSION} \
-        && ./configure --prefix=$BUILD_PREFIX --enable-dap \
-        && make -j4 \
-        && make install)
-    touch netcdf-stamp
 }
