@@ -13,15 +13,15 @@ env:
             "qgMf5wjB1OU7OJT/5AN1+0yfHWlRGCpLn1BT1+RbLTMB3LLHz0qrnzDSuJ3GjlJlYWDyDkgSKCBUFWwy4BnazdRWVj8MTqgpMYlIFKT4XWYYpL82vZ+QCQHe91ExvqF+QAtwxtVhJK1g0bRe908y8IPDkbKqlj4maLm+oUak/DU="
 
 language: python
-python: 3.5
+python: 3.8
 sudo: required
 dist: focal
 services: docker
 
 matrix:
   #exclude:
-  #    # Exclude the default Python 3.5 build
-  #    - python: 3.5
+  #    # Exclude the default Python 3.8 build
+  #    - python: 3.8
   include:
     #- os: linux
     #  env:

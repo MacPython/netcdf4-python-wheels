@@ -33,10 +33,10 @@ function build_netcdf2 {
     build_curl
     fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
     echo "build_netcdf2"
-    (cd netcdf-c-${NETCDF_VERSION} \
-        && export LIBS="-lhdf5_hl -lhdf5 -lm -lz" \ 
-        && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
-        && make -j4 \
-        && make install)
+    cd netcdf-c-${NETCDF_VERSION}
+    export LIBS="-lhdf5_hl -lhdf5 -lm -lz" 
+    ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap 
+    make -j4 
+    make install
     touch netcdf-stamp
 }
