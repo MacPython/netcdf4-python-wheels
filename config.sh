@@ -7,6 +7,7 @@ export NO_NET=1
 export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.7.4"
 export HDF5_VERSION="1.12.0"
+export PERL_VERSION"5.16.0"
 
 source h5py-wheels/config.sh
 
@@ -37,11 +38,13 @@ function build_curl2 {
     else  # manylinux
         flags="$flags --with-ssl"
 	# Install new Perl because OpenSSL configure scripts require > 5.10.0.
+	echo "Old Perl version `perl -v`"
 	curl -L https://install.perlbrew.pl | bash
 	export PERLBREW_ROOT=/root/perl5/perlbrew
 	source ${PERLBREW_ROOT}/etc/bashrc
-	perlbrew install perl-5.16.0
-	perlbrew use perl-5.16.0
+	perlbrew install perl-${PERL_VERSION}
+	perlbrew use perl-${PERL_VERSION}
+	echo "New Perl version `perl -v`"
         build_openssl
     fi
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
