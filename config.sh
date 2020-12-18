@@ -43,11 +43,10 @@ function build_curl {
         build_openssl
     fi
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
-    export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
     (cd curl-${CURL_VERSION} \
         && if [ -z "$IS_OSX" ]; then \
         LIBS=-ldl ./configure $flags; else \
-        ./configure $flags; fi\
+        env PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig ./configure $flags; fi\
         && make -j4 \
         && make install)
     touch curl-stamp
