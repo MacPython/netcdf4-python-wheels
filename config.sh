@@ -7,7 +7,7 @@ export NO_NET=1
 export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.7.4"
 export HDF5_VERSION="1.12.0"
-export PERL_VERSION"5.16.0"
+export PERL_VERSION="5.16.0"
 
 source h5py-wheels/config.sh
 
