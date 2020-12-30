@@ -57,6 +57,23 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Pin Numpy version
+      run: |
+        if [ "$MB_PYTHON_VERSION" == '3.6' ]; then
+          echo "NP_BUILD_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
+          echo "NP_TEST_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
+        elif [ "$MB_PYTHON_VERSION" == '3.7' ]; then
+          echo "NP_BUILD_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
+          echo "NP_TEST_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
+        elif [ "$MB_PYTHON_VERSION" == '3.8' ]; then
+          echo "NP_BUILD_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
+          echo "NP_TEST_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
+        elif [ "$MB_PYTHON_VERSION" == '3.9' ]; then
+          echo "NP_BUILD_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+          echo "NP_TEST_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+        else
+          echo "None of the defined python version, use default"
+        fi
     - name: Setup Environment variables
       run: |
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV; else echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV; fi
@@ -84,8 +101,8 @@ jobs:
         pip install virtualenv
     - name: Build and Install Wheels
       run: |
-        BUILD_DEPENDS="numpy cython setuptools"
-        TEST_DEPENDS="numpy nose cython"
+        BUILD_DEPENDS="numpy==$NP_BUILD_DEP cython setuptools"
+        TEST_DEPENDS="numpy==$NP_TEST_DEP nose cython"
         source multibuild/common_utils.sh
         source multibuild/travis_steps.sh
         echo "------- BEFORE INSTALL --------"
