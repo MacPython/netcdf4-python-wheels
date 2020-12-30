@@ -84,6 +84,8 @@ jobs:
         pip install virtualenv
     - name: Build and Install Wheels
       run: |
+        BUILD_DEPENDS="numpy cython setuptools"
+        TEST_DEPENDS="numpy nose cython"
         source multibuild/common_utils.sh
         source multibuild/travis_steps.sh
         echo "------- BEFORE INSTALL --------"
