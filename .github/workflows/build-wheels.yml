@@ -24,13 +24,13 @@ jobs:
 
       fail-fast: false
       matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9"]
-        os: [ubuntu-latest, macos-latest]
-        platform: [x64, x32]
+#       python-version: ["3.6", "3.7", "3.8", "3.9"]
+#       os: [ubuntu-latest, macos-latest]
+#       platform: [x64, x32]
 # test on a single platform, python version
-#       python-version: ["3.8"]
-#       os: [ubuntu-latest]
-#       platform: [x64]
+        python-version: ["3.8"]
+        os: [macos-latest]
+        platform: [x64]
         MB_ML_VER: [2014]
         exclude:
           - os: macos-latest  
