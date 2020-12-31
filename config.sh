@@ -17,6 +17,8 @@ function build_libs {
     build_hdf5
     if [ -z "$IS_OSX" ]; then
       build_curl
+    else
+      touch curl-stamp
     fi
     if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
@@ -30,30 +32,7 @@ function pip_opts {
 
 function run_tests {
     # Runs tests on installed distribution from an empty directory
-    URL="http://remotetest.unidata.ucar.edu/thredds/dodsC/testdods/testData.nc"
-    URL_https="https://podaac-opendap.jpl.nasa.gov/opendap/allData/modis/L3/aqua/11um/v2014.0/4km/daily/2017/365/A2017365.L3m_DAY_NSST_sst_4km.nc"
-    /usr/local/bin/ncdump -h  $URL
-    /usr/local/bin/ncdump -h  $URL_https
     cp ../netcdf4-python/test/* .
     python run_all.py
 }
 
-
-function build_curl {
-    if [ -e curl-stamp ]; then return; fi
-    local flags="--prefix=$BUILD_PREFIX"
-    if [ -n "$IS_OSX" ]; then
-        flags="$flags --with-darwinssl"
-    else  # manylinux
-        flags="$flags --with-ssl"
-        build_openssl
-    fi
-    fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
-    (cd curl-${CURL_VERSION} \
-        && if [ -z "$IS_OSX" ]; then \
-        LIBS=-ldl ./configure $flags; else \
-        env PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig ./configure $flags; fi\
-        && make -j4 \
-        && make install)
-    touch curl-stamp
-}
