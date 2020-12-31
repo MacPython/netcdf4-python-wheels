@@ -1,7 +1,7 @@
 env:
     global:
         - REPO_DIR=netcdf4-python
-        - BUILD_COMMIT=src_reorg
+        - BUILD_COMMIT=v2.1.6alpha1
         - PLAT=x86_64
         - UNICODE_WIDTH=32
         - NP_BUILD_DEP=1.17.3
