@@ -28,6 +28,10 @@ function pip_opts {
 
 function run_tests {
     # Runs tests on installed distribution from an empty directory
+    URL="http://remotetest.unidata.ucar.edu/thredds/dodsC/testdods/testData.nc"
+    URL_https="https://podaac-opendap.jpl.nasa.gov/opendap/allData/modis/L3/aqua/11um/v2014.0/4km/daily/2017/365/A2017365.L3m_DAY_NSST_sst_4km.nc"
+    /usr/local/bin/ncdump -h  $URL
+    /usr/local/bin/ncdump -h  $URL_https
     cp ../netcdf4-python/test/* .
     python run_all.py
 }
