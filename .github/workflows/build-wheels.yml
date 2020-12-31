@@ -113,17 +113,12 @@ jobs:
         build_wheel $REPO_DIR $PLAT
         echo "------- INSTALL_RUN --------"
         install_run $PLAT
-        cd $TRAVIS_BUILD_DIR
-        pwd
-        find ./ -name "*.whl" -print
-        /usr/local/bin/ncdump -h http://remotetest.unidata.ucar.edu/thredds/dodsC/testdods/testData.nc
-        /usr/local/bin/ncdump -h https://podaac-opendap.jpl.nasa.gov/opendap/allData/modis/L3/aqua/11um/v2014.0/4km/daily/2017/365/A2017365.L3m_DAY_NSST_sst_4km.nc
-    - name: Upload wheels to release
-      uses: svenstaro/upload-release-action@v2
-      if: github.event_name == 'create'
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ github.workspace }}/wheelhouse/netCDF4*whl
-        tag: ${{ github.ref }}
-        overwrite: true
-        file_glob: true
+#   - name: Upload wheels to release
+#     uses: svenstaro/upload-release-action@v2
+#     if: github.event_name == 'create'
+#     with:
+#       repo_token: ${{ secrets.GITHUB_TOKEN }}
+#       file: ${{ github.workspace }}/wheelhouse/netCDF4*whl
+#       tag: ${{ github.ref }}
+#       overwrite: true
+#       file_glob: true
