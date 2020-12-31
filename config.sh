@@ -40,7 +40,7 @@ function run_tests {
 
 function build_curl {
     if [ -e curl-stamp ]; then return; fi
-    local flags="--prefix=$BUILD_PREFIX -with-ssl"
+    local flags="--prefix=$BUILD_PREFIX -with-ssl=$BUILD_PREFIX"
     build_openssl
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
     (cd curl-${CURL_VERSION} \
