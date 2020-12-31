@@ -15,11 +15,12 @@ source h5py-wheels/config.sh
 
 function build_libs {
     build_hdf5
-    if [ -z "$IS_OSX" ]; then
-      build_curl
-    else
-      touch curl-stamp
-    fi
+    build_curl
+    #if [ -z "$IS_OSX" ]; then
+    #  build_curl
+    #else
+    #  touch curl-stamp
+    #fi
     if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
