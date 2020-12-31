@@ -15,13 +15,13 @@ source h5py-wheels/config.sh
 
 function build_libs {
     build_hdf5
-    #build_curl
+    build_curl
     # use built-in curl on OSX
-    if [ -z "$IS_OSX" ]; then
-      build_curl
-    else
-      touch curl-stamp
-    fi
+    #if [ -z "$IS_OSX" ]; then
+    #  build_curl
+    #else
+    #  touch curl-stamp
+    #fi
     if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
@@ -36,5 +36,19 @@ function run_tests {
     # Runs tests on installed distribution from an empty directory
     cp ../netcdf4-python/test/* .
     python run_all.py
+}
+
+function build_curl {
+    if [ -e curl-stamp ]; then return; fi
+    local flags="--prefix=$BUILD_PREFIX -with-ssl"
+    build_openssl
+    fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
+    (cd curl-${CURL_VERSION} \
+        && if [ -z "$IS_OSX" ]; then \
+        LIBS=-ldl ./configure $flags; else \
+        ./configure $flags; fi\
+        && make -j4 \
+        && make install)
+    touch curl-stamp
 }
 
