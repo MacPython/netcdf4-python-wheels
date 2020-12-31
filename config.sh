@@ -15,7 +15,6 @@ source h5py-wheels/config.sh
 
 function build_libs {
     build_hdf5
-    #build_curl
     # use built-in curl on OSX
     if [ -z "$IS_OSX" ]; then
       build_curl
