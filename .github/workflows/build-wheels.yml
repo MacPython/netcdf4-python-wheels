@@ -31,14 +31,14 @@ jobs:
 #       python-version: ["3.8"]
 #       os: [ubuntu-latest, macos-latest]
 #       platform: [x64]
-        MB_ML_VER: [2014]
+        MB_ML_VER: [2010]
         exclude:
           - os: macos-latest  
             platform: x32
     env:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
-      BUILD_COMMIT: v2.1.6alpha1
+      BUILD_COMMIT: v1.5.6alpha1
       UNICODE_WIDTH: 32
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
