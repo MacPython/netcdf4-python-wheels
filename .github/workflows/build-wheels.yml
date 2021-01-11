@@ -119,6 +119,11 @@ jobs:
         build_wheel $REPO_DIR $PLAT
         echo "------- INSTALL_RUN --------"
         install_run $PLAT
+        if [ $MB_ML_VER -ne 1 ]; then
+           /bin/rm -f  wheelhouse/cftime*manylinux1*whl
+        fi
+        echo "MB_ML_VER = $MB_ML_VER"
+        ls -l wheelhouse/cftime*whl
     - name: Upload wheels to release
       uses: svenstaro/upload-release-action@v2
       if: github.event_name == 'create'
