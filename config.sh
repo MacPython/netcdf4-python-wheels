@@ -10,7 +10,7 @@ export HDF5_VERSION="1.12.0"
 # old openssl, since building new version requires perl 5.10.0
 export OPENSSL_ROOT=openssl-1.0.2u
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
-#export CURL_VERSION="7.75.0"
+export CURL_VERSION="7.71.1"
 
 source h5py-wheels/config.sh
 
@@ -26,6 +26,27 @@ function build_libs {
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
     build_netcdf
+}
+
+function build_curl {
+    if [ -e curl-stamp ]; then return; fi
+    local flags="--prefix=$BUILD_PREFIX"
+    #if [ -n "$IS_MACOS" ]; then
+    #    flags="$flags --with-darwinssl"
+    #else  # manylinux
+    #    flags="$flags --with-ssl"
+    #    build_openssl
+    #fi
+    flags="$flags --with-ssl"
+    build_openssl
+    fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
+    (cd curl-${CURL_VERSION} \
+        && if [ -z "$IS_MACOS" ]; then \
+        LIBS=-ldl ./configure $flags; else \
+        ./configure $flags; fi\
+        && make -j4 \
+        && make install)
+    touch curl-stamp
 }
 
 function pip_opts {
