@@ -10,7 +10,8 @@ export HDF5_VERSION="1.12.0"
 # old openssl, since building new version requires perl 5.10.0
 export OPENSSL_ROOT=openssl-1.0.2u
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
-export CURL_VERSION="7.71.1"
+export CURL_VERSION="7.75.0"
+export LIBNGHTTP2_VERSION="1.43.0"
 
 source h5py-wheels/config.sh
 
@@ -37,8 +38,9 @@ function build_curl {
     #    flags="$flags --with-ssl"
     #    build_openssl
     #fi
-    flags="$flags --with-ssl --without-libnghttp2 --without-brotli"
+    flags="$flags --with-ssl --without-brotli --without--libnghttp2"
     build_openssl
+    #build_libnghttp2
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
     (cd curl-${CURL_VERSION} \
         && if [ -z "$IS_MACOS" ]; then \
@@ -49,8 +51,14 @@ function build_curl {
     touch curl-stamp
 }
 
-function pip_opts {
-    echo "--find-links https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com"
+function build_libnghttp2 {
+    if [ -e libnghttp2-stamp ]; then return; fi
+    fetch_unpack https://github.com/nghttp2/nghttp2/releases/download/v${LIBNGHTTP2_VERSION}/nghttp2-{LIBNGHTTP2_VERSION}.tar.gz
+    (cd nghttp2-${LIBNGHTTP2_VERSIONN} \
+        && ./configure --prefix=$BUILD_PREFIX --enable-shared \
+        && make \
+        && make install)
+    touch libnghttp2-stamp
 }
 
 function run_tests {
