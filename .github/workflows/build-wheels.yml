@@ -44,7 +44,7 @@ jobs:
     env:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
-      BUILD_COMMIT: v1.5.6alpha1
+      BUILD_COMMIT: v1.5.6rel
       UNICODE_WIDTH: 32
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
