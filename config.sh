@@ -37,7 +37,7 @@ function build_curl {
     #    flags="$flags --with-ssl"
     #    build_openssl
     #fi
-    flags="$flags --with-ssl"
+    flags="$flags --with-ssl --without-libnghttp2 --without-brotli"
     build_openssl
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
     (cd curl-${CURL_VERSION} \
