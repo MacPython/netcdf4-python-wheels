@@ -2,6 +2,8 @@
 # Test for OSX with [ -n "$IS_OSX" ]
 # Uncomment to disable net tests - the server is sometimes down
 #export NO_NET=1
+# ncdump/ncgen not installed in wheel, so tst_cdl.py fails
+export NO_CDL=1
 
 # Compile libs for macOS 10.9 or later
 export MACOSX_DEPLOYMENT_TARGET="10.9"
