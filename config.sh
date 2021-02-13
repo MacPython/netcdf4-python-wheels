@@ -78,7 +78,7 @@ function run_tests {
     cp ../netcdf4-python/test/* .
     export PATH="/usr/local/bin:${PATH}"
     echo "PATH = $PATH"
-    which ncdump
+    ls -l /usr/local/bin
     python run_all.py
 }
 
