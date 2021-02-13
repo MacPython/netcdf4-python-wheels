@@ -19,15 +19,14 @@ source h5py-wheels/config.sh
 function build_curl2 {
     if [ -e curl-stamp ]; then return; fi
     local flags="--prefix=$BUILD_PREFIX"
-    #if [ -n "$IS_MACOS" ]; then
-    #    flags="$flags --with-darwinssl"
-    #else  # manylinux
-    #    flags="$flags --with-ssl"
-    #    build_openssl
-    #fi
-    flags="$flags --with-ssl --without-brotli --without--libnghttp2"
+    if [ -n "$IS_MACOS" ]; then
+        flags="$flags --with-darwinssl"
+    else  # manylinux
+        flags="$flags --with-ssl"
+        build_openssl
+    fi
+    flags="$flags --without-brotli --without--libnghttp2"
     echo "curl_configure_flags = $flags"
-    build_openssl
     build_libnghttp2
     build_brotli
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
