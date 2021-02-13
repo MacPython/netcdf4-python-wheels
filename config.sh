@@ -26,9 +26,8 @@ function build_curl2 {
         build_openssl
     fi
     flags="$flags --without-brotli --without--libnghttp2"
-    echo "curl_configure_flags = $flags"
-    build_libnghttp2
-    build_brotli
+    #build_libnghttp2
+    #build_brotli
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
     (cd curl-${CURL_VERSION} \
         && if [ -z "$IS_MACOS" ]; then \
