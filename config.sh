@@ -77,6 +77,8 @@ function run_tests {
     # Runs tests on installed distribution from an empty directory
     cp ../netcdf4-python/test/* .
     export PATH="/usr/local/bin:${PATH}"
+    echo "PATH = $PATH"
+    which ncdump
     python run_all.py
 }
 
