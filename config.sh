@@ -16,21 +16,6 @@ export BROTLI_VERSION="1.0.9"
 
 source h5py-wheels/config.sh
 
-function build_libs {
-    build_hdf5
-    # use built-in curl on OSX
-    #if [ -z "$IS_OSX" ]; then
-    #  build_curl
-    #else
-    #  touch curl-stamp
-    #fi
-    build_curl
-    if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
-       export CFLAGS="-std=gnu99 -Wl,-strip-all"
-    fi
-    build_netcdf
-}
-
 function build_curl {
     if [ -e curl-stamp ]; then return; fi
     local flags="--prefix=$BUILD_PREFIX"
@@ -41,9 +26,10 @@ function build_curl {
     #    build_openssl
     #fi
     flags="$flags --with-ssl --without-brotli --without--libnghttp2"
+    echo "flags = $flags"
     build_openssl
-    #build_libnghttp2
-    #build_brotli
+    build_libnghttp2
+    build_brotli
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
     (cd curl-${CURL_VERSION} \
         && if [ -z "$IS_MACOS" ]; then \
@@ -72,6 +58,21 @@ function build_brotli {
         && make \
         && make install)
     touch brotli-stamp
+}
+
+function build_libs {
+    build_hdf5
+    # use built-in curl on OSX
+    #if [ -z "$IS_OSX" ]; then
+    #  build_curl
+    #else
+    #  touch curl-stamp
+    #fi
+    build_curl
+    if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
+       export CFLAGS="-std=gnu99 -Wl,-strip-all"
+    fi
+    build_netcdf
 }
 
 function run_tests {
