@@ -24,6 +24,7 @@ function build_libs {
     #else
     #  touch curl-stamp
     #fi
+    build_curl
     if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
@@ -41,8 +42,8 @@ function build_curl {
     #fi
     flags="$flags --with-ssl --without-brotli --without--libnghttp2"
     build_openssl
-    build_libnghttp2
-    build_brotli
+    #build_libnghttp2
+    #build_brotli
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
     (cd curl-${CURL_VERSION} \
         && if [ -z "$IS_MACOS" ]; then \
