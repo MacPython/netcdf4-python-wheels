@@ -27,7 +27,7 @@ function build_curl2 {
         flags="$flags --with-ssl"
         build_openssl
     fi
-    flags="$flags --without-brotli --without--libnghttp2"
+    flags="$flags --without-brotli --without-libnghttp2"
     #build_libnghttp2
     #build_brotli
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
@@ -78,9 +78,6 @@ function build_libs {
 function run_tests {
     # Runs tests on installed distribution from an empty directory
     cp ../netcdf4-python/test/* .
-    export PATH="/usr/local/bin:${PATH}"
-    echo "PATH = $PATH"
-    ls -l /usr/local/bin
     python run_all.py
 }
 
