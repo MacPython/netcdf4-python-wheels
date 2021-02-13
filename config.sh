@@ -12,6 +12,7 @@ export OPENSSL_ROOT=openssl-1.0.2u
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
 export CURL_VERSION="7.75.0"
 export LIBNGHTTP2_VERSION="1.43.0"
+export BROTLI_VERSION="1.0.9"
 
 source h5py-wheels/config.sh
 
@@ -40,7 +41,8 @@ function build_curl {
     #fi
     flags="$flags --with-ssl --without-brotli --without--libnghttp2"
     build_openssl
-    #build_libnghttp2
+    build_libnghttp2
+    build_brotli
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
     (cd curl-${CURL_VERSION} \
         && if [ -z "$IS_MACOS" ]; then \
@@ -59,6 +61,16 @@ function build_libnghttp2 {
         && make \
         && make install)
     touch libnghttp2-stamp
+}
+
+function build_brotli {
+    if [ -e brotli-stamp ]; then return; fi
+    fetch_unpack https://github.com/google/brotli/archive/v${BROTLI_VERSION}/v${BROTLI_VERSION}.tar.gz
+    (cd brotli-${BROTLI_VERSIONN} \
+        && ./configure-cmake --prefix=$BUILD_PREFIX --enable-shared \
+        && make \
+        && make install)
+    touch brotli-stamp
 }
 
 function run_tests {
