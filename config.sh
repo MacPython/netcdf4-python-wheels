@@ -28,8 +28,6 @@ function build_curl2 {
         build_openssl
     fi
     flags="$flags --without-brotli --without-nghttp2 --without-zstd --without-librtmp --without-libidn2"
-    #build_libnghttp2
-    #build_brotli
     fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
     (cd curl-${CURL_VERSION} \
         && if [ -z "$IS_MACOS" ]; then \
@@ -38,26 +36,6 @@ function build_curl2 {
         && make -j4 \
         && make install)
     touch curl-stamp
-}
-
-function build_libnghttp2 {
-    if [ -e libnghttp2-stamp ]; then return; fi
-    fetch_unpack https://github.com/nghttp2/nghttp2/releases/download/v${LIBNGHTTP2_VERSION}/nghttp2-${LIBNGHTTP2_VERSION}.tar.gz
-    (cd nghttp2-${LIBNGHTTP2_VERSIONN} \
-        && ./configure --prefix=$BUILD_PREFIX --enable-shared \
-        && make \
-        && make install)
-    touch libnghttp2-stamp
-}
-
-function build_brotli {
-    if [ -e brotli-stamp ]; then return; fi
-    fetch_unpack https://github.com/google/brotli/archive/v${BROTLI_VERSION}/v${BROTLI_VERSION}.tar.gz
-    (cd brotli-${BROTLI_VERSIONN} \
-        && ./configure-cmake --prefix=$BUILD_PREFIX --enable-shared \
-        && make \
-        && make install)
-    touch brotli-stamp
 }
 
 function build_libs {
