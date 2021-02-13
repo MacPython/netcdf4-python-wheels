@@ -16,7 +16,7 @@ export BROTLI_VERSION="1.0.9"
 
 source h5py-wheels/config.sh
 
-function build_curl {
+function build_curl2 {
     if [ -e curl-stamp ]; then return; fi
     local flags="--prefix=$BUILD_PREFIX"
     #if [ -n "$IS_MACOS" ]; then
@@ -26,7 +26,7 @@ function build_curl {
     #    build_openssl
     #fi
     flags="$flags --with-ssl --without-brotli --without--libnghttp2"
-    echo "flags = $flags"
+    echo "curl_configure_flags = $flags"
     build_openssl
     build_libnghttp2
     build_brotli
@@ -68,7 +68,7 @@ function build_libs {
     #else
     #  touch curl-stamp
     #fi
-    build_curl
+    build_curl2
     if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
