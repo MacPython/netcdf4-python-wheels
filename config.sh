@@ -40,7 +40,7 @@ function build_curl2 {
 
 function build_libnghttp2 {
     if [ -e libnghttp2-stamp ]; then return; fi
-    fetch_unpack https://github.com/nghttp2/nghttp2/releases/download/v${LIBNGHTTP2_VERSION}/nghttp2-{LIBNGHTTP2_VERSION}.tar.gz
+    fetch_unpack https://github.com/nghttp2/nghttp2/releases/download/v${LIBNGHTTP2_VERSION}/nghttp2-${LIBNGHTTP2_VERSION}.tar.gz
     (cd nghttp2-${LIBNGHTTP2_VERSIONN} \
         && ./configure --prefix=$BUILD_PREFIX --enable-shared \
         && make \
