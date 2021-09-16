@@ -47,6 +47,10 @@ function build_libs {
 
 function run_tests {
     # Runs tests on installed distribution from an empty directory
+    pwd
+    echo $PATH
+    ls -l /usr/local/lib
+    which python
     cp ../netcdf4-python/test/* .
     python run_all.py
 }
