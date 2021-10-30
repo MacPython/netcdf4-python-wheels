@@ -86,6 +86,22 @@ jobs:
       run: |
         echo "DOCKER_TEST_IMAGE=$(echo multibuild/xenial_arm64v8)" >> $GITHUB_ENV
 
+    - name: Pin Numpy version
+      run: |
+        if [ "$MB_PYTHON_VERSION" == '3.6' ]; then
+          echo "NP_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
+        elif [ "$MB_PYTHON_VERSION" == '3.7' ]; then
+          echo "NP_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
+        elif [ "$MB_PYTHON_VERSION" == '3.8' ]; then
+          echo "NP_DEP=$(echo oldest-supported-numpy)" >> $GITHUB_ENV;
+        elif [ "$MB_PYTHON_VERSION" == '3.9' ]; then
+          echo "NP_DEP=$(echo oldest-supported-numpy)" >> $GITHUB_ENV;
+        elif [ "$MB_PYTHON_VERSION" == '3.10' ]; then
+          echo "NP_DEP=$(echo oldest-supported-numpy)" >> $GITHUB_ENV;
+        else
+          echo "None of the defined python version, use default"
+        fi
+
     - name: Print some Environment variable
       run: |
         echo "TRAVIS_BRANCH: ${TRAVIS_BRANCH}"
@@ -102,8 +118,8 @@ jobs:
         pip install virtualenv
     - name: Build and Install Wheels
       run: |
-        BUILD_DEPENDS="oldest-supported-numpy cython setuptools"
-        TEST_DEPENDS="oldest-supported-numpy nose cython"
+        BUILD_DEPENDS="$NP_DEP cython setuptools"
+        TEST_DEPENDS="$NP_DEP nose cython"
         source multibuild/common_utils.sh
         source multibuild/travis_steps.sh
         echo "------- BEFORE INSTALL --------"
