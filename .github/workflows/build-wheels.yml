@@ -31,6 +31,23 @@ jobs:
         exclude:
           - os: macos-latest  
             platform: x32
+        include:
+          - python-version: "3.6"
+            os: ubuntu-latest
+            platform: aarch64
+            MB_ML_VER: 2014
+          - python-version: "3.7"
+            os: ubuntu-latest
+            platform: aarch64
+            MB_ML_VER: 2014
+          - python-version: "3.8"
+            os: ubuntu-latest
+            platform: aarch64
+            MB_ML_VER: 2014
+          - python-version: "3.9"
+            os: ubuntu-latest
+            platform: aarch64
+            MB_ML_VER: 2014
     env:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
@@ -53,7 +70,13 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+
+    - name: Setup QEMU
+      if: ${{ matrix.platform == 'aarch64' }}
+      uses: docker/setup-qemu-action@v1
+
     - name: Pin Numpy version
+      if: ${{ matrix.platform != 'aarch64' }}
       run: |
         if [ "$MB_PYTHON_VERSION" == '3.6' ]; then
           echo "NP_BUILD_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
@@ -73,17 +96,31 @@ jobs:
         else
           echo "None of the defined python version, use default"
         fi
+
+    - name: Pin Numpy version for AArch64
+      if: ${{ matrix.platform == 'aarch64' }}
+      run: |
+          echo "NP_BUILD_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+          echo "NP_TEST_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+
     - name: Setup Environment variables
       run: |
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV; else echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV; fi
-        if [ "x32" == "${{ matrix.platform }}" ]; then echo "PLAT=i686" >> $GITHUB_ENV; else echo "PLAT=x86_64" >> $GITHUB_ENV; fi
+        if [ "x32" == "${{ matrix.platform }}" ]; then echo "PLAT=i686" >> $GITHUB_ENV; elif [ "aarch64" == "${{ matrix.platform }}" ]; then echo "PLAT=aarch64" >> $GITHUB_ENV; else echo "PLAT=x86_64" >> $GITHUB_ENV; fi
         if [ "macos-latest" == "${{ matrix.os }}" ]; then echo "TRAVIS_OS_NAME=osx" >> $GITHUB_ENV; else echo "TRAVIS_OS_NAME=${{ matrix.os }}" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV; else echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "BUILD_COMMIT=master" >> $GITHUB_ENV; else echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV; fi
+
     - name: Setup Special Environment variables for Linux
       if: startsWith(matrix.os,'ubuntu') && matrix.MB_ML_VER == 2010
       run: |
         echo "DOCKER_TEST_IMAGE=$(echo multibuild/xenial_$PLAT)" >> $GITHUB_ENV
+
+    - name: Setup Special Environment variables for Linux AArch64
+      if: ${{ matrix.platform == 'aarch64' }}
+      run: |
+        echo "DOCKER_TEST_IMAGE=$(echo multibuild/xenial_arm64v8)" >> $GITHUB_ENV
+
     - name: Print some Environment variable
       run: |
         echo "TRAVIS_BRANCH: ${TRAVIS_BRANCH}"
