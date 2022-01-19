@@ -3,7 +3,7 @@
 	url = https://github.com/Unidata/netcdf4-python
 [submodule "multibuild"]
 	path = multibuild
-	url = https://github.com/matthew-brett/multibuild
+	url = https://github.com/multi-build/multibuild
 [submodule "h5py-wheels"]
 	path = h5py-wheels
 	url = https://github.com/MacPython/h5py-wheels
