@@ -1,14 +1,14 @@
 # Define custom utilities
 # Test for OSX with [ -n "$IS_OSX" ]
 # Uncomment to disable net tests - the server is sometimes down
-#export NO_NET=1
+export NO_NET=1
 # ncdump/ncgen not installed in wheel, so tst_cdl.py fails
 export NO_CDL=1
 
 # Compile libs for macOS 10.9 or later
 export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.8.1"
-export HDF5_VERSION="1.12.0"
+export HDF5_VERSION="1.12.1"
 # old openssl, since building new version requires perl 5.10.0
 export OPENSSL_ROOT=openssl-1.0.2u
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
