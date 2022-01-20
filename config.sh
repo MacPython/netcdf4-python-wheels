@@ -36,6 +36,28 @@ function build_curl2 {
     touch curl-stamp
 }
 
+function build_netcdf {
+    if [ -e netcdf-stamp ]; then return; fi
+    build_hdf5
+    build_curl
+    if [ $NETCDF_VERSION == "MASTER" ]; then
+        git clone https://github.com/Unidata/netcdf-c
+        cd netcdf-c
+        autoreconf -i
+        ./configure --prefix=$BUILD_PREFIX --enable-dap \
+        make -j4 
+        make install
+        cd ..
+    else
+        fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
+        (cd netcdf-c-${NETCDF_VERSION} \
+            && ./configure --prefix=$BUILD_PREFIX --enable-dap \
+            && make -j4 \
+            && make install)
+    fi
+    touch netcdf-stamp
+}
+
 function build_libs {
     build_hdf5
     build_curl2
@@ -43,28 +65,6 @@ function build_libs {
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
     build_netcdf
-}
-
-function build_netcdf {
-    if [ -e netcdf-stamp ]; then return; fi
-    build_hdf5
-    build_curl
-    if [ $NETCDF_VERSION == "MASTER" ]; then
-    git clone https://github.com/Unidata/netcdf-c
-    cd netcdf-c
-    autoreconf -i
-    ./configure --prefix=$BUILD_PREFIX --enable-dap \
-    make -j4 
-    make install
-    cd ..
-    else
-    fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
-    (cd netcdf-c-${NETCDF_VERSION} \
-        && ./configure --prefix=$BUILD_PREFIX --enable-dap \
-        && make -j4 \
-        && make install)
-    fi
-    touch netcdf-stamp
 }
 
 function run_tests {
