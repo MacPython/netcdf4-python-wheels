@@ -7,7 +7,7 @@ export NO_CDL=1
 
 # Compile libs for macOS 10.9 or later
 #export MACOSX_DEPLOYMENT_TARGET="10.9"
-export NETCDF_VERSION="MASTER"
+export NETCDF_VERSION="4.8.1"
 export HDF5_VERSION="1.12.1"
 # old openssl, since building new version requires perl 5.10.0
 export OPENSSL_ROOT=openssl-1.0.2u
@@ -36,7 +36,7 @@ function build_curl2 {
     touch curl-stamp
 }
 
-function build_netcdf {
+function build_netcdf2 {
     if [ -e netcdf-stamp ]; then return; fi
     build_hdf5
     build_curl
@@ -64,7 +64,7 @@ function build_libs {
     if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
-    build_netcdf
+    build_netcdf2
 }
 
 function run_tests {
