@@ -56,6 +56,7 @@ function build_netcdf {
     ./configure --prefix=$BUILD_PREFIX --enable-dap \
     make -j4 
     make install
+    cd ..
     else
     fetch_unpack https://github.com/Unidata/netcdf-c/archive/v${NETCDF_VERSION}.tar.gz
     (cd netcdf-c-${NETCDF_VERSION} \
