@@ -48,13 +48,13 @@ jobs:
             platform: aarch64
           - python-version: "3.8"
             os: macos-10.15
-            platform: universal2
+            platform: x86_64
           - python-version: "3.9"
             os: macos-10.15
-            platform: universal2
+            platform: x86_64
           - python-version: "3.10"
             os: macos-10.15
-            platform: universal2
+            platform: x86_64
     env:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
@@ -90,7 +90,7 @@ jobs:
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV; else echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "BUILD_COMMIT=master" >> $GITHUB_ENV; else echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV; fi
         # make universal2 wheels on macos 10.15 by cross-compiling
-        #if [ "macos-10.15" == "${{ matrix.os }}" ]; then echo "PLAT=universal2" >> $GITHUB_ENV; fi
+        if [ "macos-10.15" == "${{ matrix.os }}" ]; then echo "PLAT=universal2" >> $GITHUB_ENV; fi
 
     - name: Setup Special Environment variables for Linux AArch64
       if: ${{ matrix.platform == 'aarch64' }}
