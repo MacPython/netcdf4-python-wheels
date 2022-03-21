@@ -130,7 +130,7 @@ function build_hdf5 {
     clang ../../src/H5detect.c -I ../../src/ -o H5detect
     clang ../../src/H5make_libsettings.c -I ../../src/ -o H5make_libsettings
     ls -l
-    cd ..
+    cd ../..
     export PATH=$(pwd)/native-build/bin:$PATH
     make -j4
     make install
