@@ -124,12 +124,12 @@ function build_hdf5 {
     patch -p0 < osx_cross_src_makefile.patch
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_PREFIX/lib 
     ./configure --without-szlib --prefix=$BUILD_PREFIX --enable-threadsafe --enable-unsupported --with-pthread=yes --enable-build-mode=production  --host=aarch64-apple-darwin --enable-tests=no
-    ls -l
     mkdir -p native-build/bin
     cd native-build/bin
-    CC=clang
-    CFLAGS= $CC ../../src/H5detect.c -I ../../src/ -o H5detect
-    CFLAGS= $CC ../../src/H5make_libsettings.c -I ../../src/ -o H5make_libsettings
+    pwd
+    clang ../../src/H5detect.c -I ../../src/ -o H5detect
+    clang ../../src/H5make_libsettings.c -I ../../src/ -o H5make_libsettings
+    ls -l
     cd ..
     export PATH=$(pwd)/native-build/bin:$PATH
     make -j4
