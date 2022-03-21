@@ -87,7 +87,7 @@ function build_hdf5 {
     fetch_unpack $hdf5_url/hdf5-$short/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz
     
     if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
-    pushd hdf5-$HDF5_VERSION
+    cd hdf5-$HDF5_VERSION
     # from https://github.com/conda-forge/hdf5-feedstock/commit/2cb83b63965985fa8795b0a13150bf0fd2525ebd
     export ac_cv_sizeof_long_double=8
     export hdf5_cv_ldouble_to_long_special=no
@@ -125,14 +125,14 @@ function build_hdf5 {
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_PREFIX/lib 
     ./configure --without-szlib --prefix=$BUILD_PREFIX --enable-threadsafe --enable-unsupported --with-pthread=yes --enable-build-mode=production  --host=aarch64-apple-darwin --enable-tests=no
     mkdir -p native-build/bin
-    pushd native-build/bin
+    cd native-build/bin
     CFLAGS= $CC ../../src/H5detect.c -I ../../src/ -o H5detect
     CFLAGS= $CC ../../src/H5make_libsettings.c -I ../../src/ -o H5make_libsettings
-    popd
-    export PATH=$(pwd)/native-build/bin:$PAT
+    cd ..
+    export PATH=$(pwd)/native-build/bin:$PATH
     make -j4
     make install
-    popd
+    cd ..
     touch hdf5-stamp
     else
     (cd hdf5-$HDF5_VERSION \
