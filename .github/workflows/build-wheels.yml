@@ -38,8 +38,8 @@ jobs:
             os: ubuntu-latest
             platform: aarch64
           - python-version: "3.8"
-             os: ubuntu-latest
-           platform: aarch64
+            os: ubuntu-latest
+            platform: aarch64
           - python-version: "3.9"
             os: ubuntu-latest
             platform: aarch64
