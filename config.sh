@@ -123,7 +123,7 @@ function build_hdf5 {
     patch -p0 < osx_cross_hl_fortran_src_makefile.patch
     patch -p0 < osx_cross_src_makefile.patch
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_PREFIX/lib 
-    ./configure --with-szlib=$BUILD_PREFIX --prefix=$BUILD_PREFIX --enable-threadsafe --enable-unsupported --with-pthread=yes --enable-build-mode=production  --host=aarch64-apple-darwin --enable-tests=no
+    ./configure --without-szlib --prefix=$BUILD_PREFIX --enable-threadsafe --enable-unsupported --with-pthread=yes --enable-build-mode=production  --host=aarch64-apple-darwin --enable-tests=no
     mkdir -p native-build/bin
     pushd native-build/bin
     CFLAGS= $CC ../../src/H5detect.c -I ../../src/ -o H5detect
