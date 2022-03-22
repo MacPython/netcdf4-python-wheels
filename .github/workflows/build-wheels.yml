@@ -23,13 +23,15 @@ jobs:
     strategy:
 
       fail-fast: false
-      matrix:
-        #python-version: [ "3.6", "3.7", "3.8", "3.9", "3.10" ]
-        python-version: [ "3.10" ]
-        #os: [ubuntu-latest, macos-latest]
-        os: [macos-latest]
-        #platform: [x64, x32]
-        platform: [x64]
+    env:
+      python-version: "3.10"
+      os: macos-latest   
+      platform: x86_64
+#   env:
+#     matrix:
+#       python-version: [ "3.6", "3.7", "3.8", "3.9", "3.10" ]
+#       os: [ubuntu-latest, macos-latest]
+#       platform: [x64, x32]
 #       exclude:
 #         - os: macos-latest  
 #           platform: x32
@@ -55,9 +57,9 @@ jobs:
 #         - python-version: "3.9"
 #           os: macos-latest  
 #           platform: x86_64
-          - python-version: "3.10"
-            os: macos-latest   
-            platform: x86_64
+#         - python-version: "3.10"
+#           os: macos-latest   
+#           platform: x86_64
     env:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
