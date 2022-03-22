@@ -81,7 +81,7 @@ jobs:
     - name: Setup Special Environment variables for Linux AArch64
       if: ${{ matrix.platform == 'aarch64' }}
       run: |
-        echo "DOCKER_TEST_IMAGE=$(echo multibuild/xenial_arm64v8)" >> $GITHUB_ENV
+        echo "DOCKER_TEST_IMAGE=$(echo multibuild/focal_arm64v8)" >> $GITHUB_ENV
 
     - name: Pin Numpy version
       run: |
