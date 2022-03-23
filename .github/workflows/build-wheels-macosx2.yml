@@ -33,12 +33,14 @@ jobs:
       MB_ML_VER: 2014
       BUILD_COMMIT: v1.5.8rel
       UNICODE_WIDTH: 32
+      PLAT:x86_64
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_REPO_SLUG: ${{ github.repository }}
       TRAVIS_BRANCH: ${{ github.head_ref }}
       TRAVIS_PULL_REQUEST: ${{ github.event.number }}
       TRAVIS_BUILD_DIR: ${{ github.workspace }}
+      TRAVIS_OS_NAME: osx
       MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
 
     steps:

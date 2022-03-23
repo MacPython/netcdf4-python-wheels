@@ -33,12 +33,14 @@ jobs:
       MB_ML_VER: 2014
       BUILD_COMMIT: v1.5.8rel
       UNICODE_WIDTH: 32
+      PLAT: universal2
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_REPO_SLUG: ${{ github.repository }}
       TRAVIS_BRANCH: ${{ github.head_ref }}
       TRAVIS_PULL_REQUEST: ${{ github.event.number }}
       TRAVIS_BUILD_DIR: ${{ github.workspace }}
+      TRAVIS_OS_NAME: osx
       MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
 
     steps:
@@ -55,8 +57,6 @@ jobs:
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV; else echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV; else echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "BUILD_COMMIT=master" >> $GITHUB_ENV; else echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV; fi
-        echo "TRAVIS_OS_NAME=osx" >> $GITHUB_ENV
-        echo "PLAT=universal2" >> $GITHUB_ENV
 
     - name: Pin Numpy version
       run: |
