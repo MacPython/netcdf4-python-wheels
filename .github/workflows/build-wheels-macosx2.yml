@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and build
 # manylinux wheels for a variety of python versions and architectures.
 
-name: Build and upload linux wheels
+name: Build and upload macosx wheels for x86_64
 
 on:
   push:
@@ -24,26 +24,9 @@ jobs:
       fail-fast: false
 
       matrix:
-        python-version: [ "3.6", "3.7", "3.8", "3.9", "3.10" ]
-        os: [ubuntu-latest]
-        platform: [x64, x32]
-        include:
-          - python-version: "3.6"
-            os: ubuntu-latest
-            platform: aarch64
-          - python-version: "3.7"
-            os: ubuntu-latest
-            platform: aarch64
-          - python-version: "3.8"
-            os: ubuntu-latest
-            platform: aarch64
-          - python-version: "3.9"
-            os: ubuntu-latest
-            platform: aarch64
-          - python-version: "3.10"
-            os: ubuntu-latest
-            platform: aarch64
-
+        python-version: [ "3.8", "3.9","3.10" ]
+        os: [macos-latest]
+        platform: [x86_64]
     env:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
@@ -67,21 +50,12 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Setup QEMU
-      if: ${{ matrix.platform == 'aarch64' }}
-      uses: docker/setup-qemu-action@v1
-
     - name: Setup Environment variables
       run: |
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV; else echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV; fi
-        if [ "x32" == "${{ matrix.platform }}" ]; then echo "PLAT=i686" >> $GITHUB_ENV; elif [ "aarch64" == "${{ matrix.platform }}" ]; then echo "PLAT=aarch64" >> $GITHUB_ENV; else echo "PLAT=x86_64" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV; else echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "BUILD_COMMIT=master" >> $GITHUB_ENV; else echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV; fi
-
-    - name: Setup Special Environment variables for Linux AArch64
-      if: ${{ matrix.platform == 'aarch64' }}
-      run: |
-        echo "DOCKER_TEST_IMAGE=$(echo multibuild/focal_arm64v8)" >> $GITHUB_ENV
+        echo "TRAVIS_OS_NAME=osx" >> $GITHUB_ENV
 
     - name: Pin Numpy version
       run: |

@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and build
 # manylinux wheels for a variety of python versions and architectures.
 
-name: Build and upload macosx wheels
+name: Build and upload macosx wheels (universal2 and arm64)
 
 on:
   push:
