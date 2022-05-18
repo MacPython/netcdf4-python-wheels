@@ -13,6 +13,7 @@ export HDF5_VERSION="1.12.1"
 export OPENSSL_ROOT=openssl-1.0.2u
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
 export CURL_VERSION="7.75.0"
+export=LIBAEC_VERSION="1.0.4"
 
 
 function build_curl2 {
@@ -33,6 +34,18 @@ function build_curl2 {
         && make -j4 \
         && make install)
     touch curl-stamp
+}
+
+function build_libaec {
+    if [ -e libaec-stamp ]; then return; fi
+    local root_name=v${LIBAEC_VERSION}
+    local tar_name=libaec-${root_name}.tar.gz
+    fetch_unpack https://gitlab.dkrz.de/k202009/libaec/-/archive/${root_name}/${tar_name}
+    (cd libaec-${root_name} \
+        && ./configure --prefix=$BUILD_PREFIX \
+        && make \
+        && make install)
+    touch libaec-stamp
 }
 
 function build_hdf5 {
@@ -81,7 +94,11 @@ function build_hdf5 {
     patch -p0 < osx_cross_hl_fortran_src_makefile.patch
     patch -p0 < osx_cross_src_makefile.patch
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_PREFIX/lib 
-    ./configure --without-szlib --prefix=$BUILD_PREFIX --enable-threadsafe --enable-unsupported --with-pthread=yes --enable-build-mode=production  --host=aarch64-apple-darwin --enable-tests=no
+    #if [ -n "$IS_MACOS" ] && []; then
+    #./configure --without-szlib --prefix=$BUILD_PREFIX --enable-threadsafe --enable-unsupported --with-pthread=yes --enable-build-mode=production  --host=aarch64-apple-darwin --enable-tests=no
+    #else
+    ./configure --with-szlib=$BUILD_PREFIX --prefix=$BUILD_PREFIX --enable-threadsafe --enable-unsupported --with-pthread=yes --enable-build-mode=production  --host=aarch64-apple-darwin --enable-tests=no
+    #fi
     mkdir -p native-build/bin
     cd native-build/bin
     pwd
