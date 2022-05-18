@@ -1,0 +1,188 @@
+--- configure.orig	2022-04-19 10:44:19.000000000 -0600
++++ configure	2022-05-18 11:59:19.000000000 -0600
+@@ -670,6 +670,7 @@
+ DEPRECATED_SYMBOLS
+ BUILD_ALL_CONDITIONAL_FALSE
+ BUILD_ALL_CONDITIONAL_TRUE
++cross_compiling
+ ROOT
+ JAVA_VERSION
+ CXX_VERSION
+@@ -6686,12 +6687,7 @@
+ }
+ 
+ _ACEOF
+-        if test "$cross_compiling" = yes; then :
+-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+-as_fn_error $? "cannot run test program while cross compiling
+-See \`config.log' for more details" "$LINENO" 5; }
+-else
++if test "$cross_compiling" = no; then :
+   if ac_fn_c_try_run "$LINENO"; then :
+ 
+             LDBL_DIG=$(./conftest$EXEEXT 2>&1 | sed -n '1p')
+@@ -6710,13 +6706,15 @@
+ 
+ 
+ 
+-if test "$ac_cv_sizeof___float128" != 0 && test "$FLT128_DIG" != 0 ; then
++if [ -z "$PAC_C_MAX_REAL_PRECISION" ]; then
++  if test "$ac_cv_sizeof___float128" != 0 && test "$FLT128_DIG" != 0 ; then
+ 
+ $as_echo "#define HAVE_FLOAT128 1" >>confdefs.h
+ 
+-  PAC_C_MAX_REAL_PRECISION=$FLT128_DIG
+-else
+-  PAC_C_MAX_REAL_PRECISION=$LDBL_DIG
++    PAC_C_MAX_REAL_PRECISION=$FLT128_DIG
++  else
++    PAC_C_MAX_REAL_PRECISION=$LDBL_DIG
++  fi
+ fi
+ 
+ cat >>confdefs.h <<_ACEOF
+@@ -8177,10 +8175,32 @@
+ 
+ TEST_SRC="`sed -n '/PROGRAM FC_AVAIL_KINDS/,/END PROGRAM FC_AVAIL_KINDS/p' $srcdir/m4/aclocal_fc.f90`"
+ if test "$cross_compiling" = yes; then :
+-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+-as_fn_error $? "cannot run test program while cross compiling
+-See \`config.log' for more details" "$LINENO" 5; }
++
++cat >>confdefs.h <<_ACEOF
++#define PAC_FC_MAX_REAL_PRECISION $PAC_FC_MAX_REAL_PRECISION
++_ACEOF
++
++
++cat >>confdefs.h <<_ACEOF
++#define H5CONFIG_F_NUM_RKIND $H5CONFIG_F_NUM_RKIND
++_ACEOF
++
++
++cat >>confdefs.h <<_ACEOF
++#define H5CONFIG_F_NUM_IKIND $H5CONFIG_F_NUM_IKIND
++_ACEOF
++
++
++cat >>confdefs.h <<_ACEOF
++#define H5CONFIG_F_RKIND $H5CONFIG_F_RKIND
++_ACEOF
++
++
++cat >>confdefs.h <<_ACEOF
++#define H5CONFIG_F_IKIND $H5CONFIG_F_IKIND
++_ACEOF
++
++
+ else
+   cat > conftest.$ac_ext <<_ACEOF
+ $TEST_SRC
+@@ -8272,57 +8292,6 @@
+ ac_compiler_gnu=$ac_cv_fc_compiler_gnu
+ 
+ pack_int_sizeof=""
+-rm -f pac_fconftest.out
+-  cat > conftest.$ac_ext <<_ACEOF
+-
+-
+-                PROGRAM main
+-                USE ISO_C_BINDING
+-                USE ISO_FORTRAN_ENV, ONLY : stderr=>ERROR_UNIT
+-                IMPLICIT NONE
+-                INTEGER a
+-                REAL b
+-                DOUBLE PRECISION c
+-                WRITE(stderr,*) $FC_SIZEOF_A
+-                WRITE(stderr,*) KIND(a)
+-                WRITE(stderr,*) $FC_SIZEOF_B
+-                WRITE(stderr,*) KIND(b)
+-                WRITE(stderr,*) $FC_SIZEOF_C
+-                WRITE(stderr,*) KIND(c)
+-                END
+-
+-
+-_ACEOF
+-        if test "$cross_compiling" = yes; then :
+-
+-            pack_int_sizeof=""
+-
+-else
+-  if ac_fn_fc_try_run "$LINENO"; then :
+-
+-            PAC_FORTRAN_NATIVE_INTEGER_SIZEOF=$(./conftest$EXEEXT 2>&1 | sed -n '1p')
+-            PAC_FORTRAN_NATIVE_INTEGER_KIND=$(./conftest$EXEEXT 2>&1 | sed -n '2p')
+-            PAC_FORTRAN_NATIVE_REAL_SIZEOF=$(./conftest$EXEEXT 2>&1 | sed -n '3p')
+-            PAC_FORTRAN_NATIVE_REAL_KIND=$(./conftest$EXEEXT 2>&1 | sed -n '4p')
+-            PAC_FORTRAN_NATIVE_DOUBLE_SIZEOF=$(./conftest$EXEEXT 2>&1 | sed -n '5p')
+-            PAC_FORTRAN_NATIVE_DOUBLE_KIND=$(./conftest$EXEEXT 2>&1 | sed -n '6p')
+-
+-else
+-
+-            as_fn_error $? "Fortran program fails to build or run!" "$LINENO" 5
+-
+-fi
+-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+-  conftest.$ac_objext conftest.beam
+-fi
+-
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $pack_int_sizeof" >&5
+-$as_echo "$pack_int_sizeof" >&6; }
+-ac_ext=${ac_fc_srcext-f}
+-ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
+-ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
+-ac_compiler_gnu=$ac_cv_fc_compiler_gnu
+-
+ 
+ 
+   ## Find all available KINDs
+@@ -8465,7 +8434,9 @@
+ fi
+ 
+ done
+-PAC_FC_ALL_INTEGER_KINDS_SIZEOF="{`echo $pack_int_sizeof | sed -e 's/,$//' | sed -e 's/ //g'`}"
++if [ -z "$PAC_FC_ALL_INTEGER_KINDS_SIZEOF" ]; then
++  PAC_FC_ALL_INTEGER_KINDS_SIZEOF="{`echo $pack_int_sizeof | sed -e 's/,$//' | sed -e 's/ //g'`}"
++fi
+ { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PAC_FC_ALL_INTEGER_KINDS_SIZEOF" >&5
+ $as_echo "$PAC_FC_ALL_INTEGER_KINDS_SIZEOF" >&6; }
+ ac_ext=${ac_fc_srcext-f}
+@@ -8519,7 +8490,9 @@
+ fi
+ 
+ done
+-PAC_FC_ALL_REAL_KINDS_SIZEOF="{`echo $pack_real_sizeof | sed -e 's/,$//' | sed -e 's/ //g'`}"
++if [ -z "$PAC_FC_ALL_REAL_KINDS_SIZEOF" ]; then
++  PAC_FC_ALL_REAL_KINDS_SIZEOF="{`echo $pack_real_sizeof | sed -e 's/,$//' | sed -e 's/ //g'`}"
++fi
+ { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PAC_FC_ALL_REAL_KINDS_SIZEOF" >&5
+ $as_echo "$PAC_FC_ALL_REAL_KINDS_SIZEOF" >&6; }
+ ac_ext=${ac_fc_srcext-f}
+@@ -29577,12 +29550,7 @@
+   if ${hdf5_cv_szlib_can_encode+:} false; then :
+   $as_echo_n "(cached) " >&6
+ else
+-  if test "$cross_compiling" = yes; then :
+-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+-as_fn_error $? "cannot run test program while cross compiling
+-See \`config.log' for more details" "$LINENO" 5; }
+-else
++if test "$cross_compiling" = no; then :
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+@@ -33937,8 +33905,10 @@
+ 
+ if test "$cross_compiling" = yes; then :
+ 
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: unknown, assuming yes" >&5
+-$as_echo "unknown, assuming yes" >&6; }
++    { $as_echo "$as_me:${as_lineno-$LINENO}: result: unknown, assuming no" >&5
++$as_echo "unknown, assuming no" >&6; }
++
++$as_echo "#define NO_ALIGNMENT_RESTRICTIONS 1" >>confdefs.h
+ 
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext

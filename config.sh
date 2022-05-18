@@ -8,7 +8,7 @@ export NO_CDL=1
 # Compile libs for macOS 10.9 or later
 export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.8.1"
-export HDF5_VERSION="1.12.1"
+export HDF5_VERSION="1.12.2"
 # old openssl, since building new version requires perl 5.10.0
 export OPENSSL_ROOT=openssl-1.0.2u
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
@@ -90,7 +90,8 @@ function build_hdf5 {
     export PAC_FORTRAN_NUM_INTEGER_KINDS="5"
     export PAC_FC_ALL_REAL_KINDS_SIZEOF="{4,8}"
     export PAC_FC_ALL_INTEGER_KINDS_SIZEOF="{1,2,4,8,16}"
-    curl -sLO https://github.com/conda-forge/hdf5-feedstock/raw/2cb83b63965985fa8795b0a13150bf0fd2525ebd/recipe/patches/osx_cross_configure.patch
+    #curl -sLO https://github.com/conda-forge/hdf5-feedstock/raw/2cb83b63965985fa8795b0a13150bf0fd2525ebd/recipe/patches/osx_cross_configure.patch
+    curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/hdf5_configure.patch -o osx_cross_configure.patch
     curl -sLO https://github.com/conda-forge/hdf5-feedstock/raw/2cb83b63965985fa8795b0a13150bf0fd2525ebd/recipe/patches/osx_cross_fortran_src_makefile.patch
     curl -sLO https://github.com/conda-forge/hdf5-feedstock/raw/2cb83b63965985fa8795b0a13150bf0fd2525ebd/recipe/patches/osx_cross_hl_fortran_src_makefile.patch
     curl -sLO https://github.com/conda-forge/hdf5-feedstock/raw/2cb83b63965985fa8795b0a13150bf0fd2525ebd/recipe/patches/osx_cross_src_makefile.patch
