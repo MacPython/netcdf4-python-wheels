@@ -42,6 +42,7 @@ function build_libaec {
     local tar_name=libaec-${root_name}.tar.gz
     fetch_unpack https://gitlab.dkrz.de/k202009/libaec/-/archive/${root_name}/${tar_name}
     (cd libaec-${root_name} \
+        && autoreconf -i
         && ./configure --prefix=$BUILD_PREFIX \
         && make \
         && make install)
