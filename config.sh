@@ -91,7 +91,7 @@ function build_hdf5 {
     export PAC_FC_ALL_REAL_KINDS_SIZEOF="{4,8}"
     export PAC_FC_ALL_INTEGER_KINDS_SIZEOF="{1,2,4,8,16}"
     #curl -sLO https://github.com/conda-forge/hdf5-feedstock/raw/2cb83b63965985fa8795b0a13150bf0fd2525ebd/recipe/patches/osx_cross_configure.patch
-    curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/libaec_cross/hdf5_configure.patch -o osx_cross_configure.patch
+    curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/hdf5_configure.patch -o osx_cross_configure.patch
     curl -sLO https://github.com/conda-forge/hdf5-feedstock/raw/2cb83b63965985fa8795b0a13150bf0fd2525ebd/recipe/patches/osx_cross_fortran_src_makefile.patch
     curl -sLO https://github.com/conda-forge/hdf5-feedstock/raw/2cb83b63965985fa8795b0a13150bf0fd2525ebd/recipe/patches/osx_cross_hl_fortran_src_makefile.patch
     curl -sLO https://github.com/conda-forge/hdf5-feedstock/raw/2cb83b63965985fa8795b0a13150bf0fd2525ebd/recipe/patches/osx_cross_src_makefile.patch
