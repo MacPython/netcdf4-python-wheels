@@ -42,6 +42,9 @@ function build_libaec {
     local tar_name=libaec-${root_name}.tar.gz
     fetch_unpack https://gitlab.dkrz.de/k202009/libaec/-/archive/${root_name}/${tar_name}
     #fetch_unpack https://gitlab.dkrz.de/k202009/libaec/uploads/45b10e42123edd26ab7b3ad92bcf7be2/libaec-1.0.6.tar.gz
+    if [ -n "$IS_MACOS" ]; then
+        brew install autoconf automake libtool
+    fi
     (cd libaec-${root_name} \
         && autoreconf -i \
         && ./configure --prefix=$BUILD_PREFIX \
