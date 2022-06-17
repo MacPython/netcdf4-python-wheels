@@ -7,7 +7,7 @@ export NO_CDL=1
 
 # Compile libs for macOS 10.9 or later
 export MACOSX_DEPLOYMENT_TARGET="10.9"
-export NETCDF_VERSION="4.8.1"
+export NETCDF_VERSION="4.9.0"
 export HDF5_VERSION="1.12.2"
 # old openssl, since building new version requires perl 5.10.0
 export OPENSSL_ROOT=openssl-1.0.2u
