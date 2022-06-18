@@ -79,6 +79,7 @@ function build_zstd {
 
 function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
+    build_curl
     fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
     (cd netcdf-c-${NETCDF_VERSION} \
         && ./configure --prefix=$BUILD_PREFIX --enable-dap \
@@ -160,20 +161,31 @@ function build_hdf5 {
 }
 
 function build_libs {
+    echo "build_zlib"
     build_zlib
+    echo "build_lz4"
     build_lz4
+    echo "build_lzo"
     build_lzo
+    echo "build_lzf"
     build_lzf
+    echo "build_zstd"
     build_zstd
+    echo "build_bzip2"
     build_bzip2
+    echo "build_blosc"
     build_blosc
     # libaec is a drop-in replacement for szip
+    echo "build_libaec"
     build_libaec
+    echo "build_hdf5"
     build_hdf5
+    echo "build_curl2"
     build_curl2
     if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
+    echo "build_netcdf"
     build_netcdf
 }
 
