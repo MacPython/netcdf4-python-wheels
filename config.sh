@@ -71,7 +71,7 @@ function build_zstd {
     local tar_name=zstd-${root_name}.tar.gz
     fetch_unpack https://github.com/facebook/zstd/releases/download/${root_name}/zstd-${ZSTD_VERSION}.tar.gz
     (cd zstd-${ZSTD_VERSION} \
-        && make
+        && make \
         && make install)
     touch zstd-stamp
 }
