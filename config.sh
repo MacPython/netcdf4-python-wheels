@@ -151,6 +151,18 @@ function build_hdf5 {
     fi
 }
 
+function build_bzip2 {
+    if [ -n "$IS_MACOS" ]; then return; fi  # OSX has bzip2 libs already
+    if [ -e bzip2-stamp ]; then return; fi
+    echo "Download https://mirrors.kernel.org/sourceware/bzip2/bzip2-${BZIP2_VERSION}.tar.gz"
+    fetch_unpack https://mirrors.kernel.org/sourceware/bzip2/bzip2-${BZIP2_VERSION}.tar.gz
+    tar -tvzf bzip2-${BZIP2_VERSION}.tar.gz
+    (cd bzip2-${BZIP2_VERSION} \
+        && make -f Makefile-libbz2_so \
+        && make install PREFIX=$BUILD_PREFIX)
+    touch bzip2-stamp
+}
+
 function build_libs {
     build_hdf5
     build_curl2
