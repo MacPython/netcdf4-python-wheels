@@ -14,6 +14,8 @@ export OPENSSL_ROOT=openssl-1.0.2u
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
 export CURL_VERSION="7.75.0"
 export LIBAEC_VERSION="1.0.6"
+export ZSTD_VERSION="1.5.2"
+export LZ4_VERSION="1.5.2"
 
 
 function build_curl2 {
@@ -51,6 +53,27 @@ function build_libaec {
         && make \
         && make install)
     touch libaec-stamp
+}
+
+function build_lz4 {
+    if [ -e lz4-stamp ]; then return; fi
+    local root_name=v${LZ4_VERSION}
+    fetch_unpack https://github.com/lz4/lz4/archive/refs/tags/${root_name}.tar.gz
+    cd lz4-${LZ4_VERSION}
+    make
+    make install
+    touch lz4-stamp
+}
+ 
+function build_zstd {
+    if [ -e zstd-stamp ]; then return; fi
+    local root_name=v${ZSTD_VERSION}
+    local tar_name=zstd-${root_name}.tar.gz
+    fetch_unpack https://github.com/facebook/zstd/releases/download/${root_name}/zstd-${ZSTD_VERSION}.tar.gz
+    cd zstd-${ZSTD_VERSION}
+    make
+    make install
+    touch zstd-stamp
 }
 
 function build_hdf5 {
@@ -134,6 +157,12 @@ function build_libs {
     if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
+    build_bzip2
+    build_lz4
+    build_lzo
+    build_lzf
+    build_zstd
+    build_blosc
     build_netcdf
 }
 
