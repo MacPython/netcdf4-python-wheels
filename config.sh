@@ -61,7 +61,7 @@ function build_lz4 {
     fetch_unpack https://github.com/lz4/lz4/archive/refs/tags/v${LZ4_VERSION}.tar.gz
     (cd lz4-${LZ4_VERSION} \
         && make \
-        && make install prefix=$BUILD_PREFIX )
+        && make install lib prefix=$BUILD_PREFIX )
     touch lz4-stamp
 }
  
@@ -161,8 +161,10 @@ function build_hdf5 {
 function build_libs {
     echo "build_zlib"
     build_zlib
-    echo "build_lz4"
-    build_lz4
+    if [ -z "$IS_MACOS" ]; then
+       echo "build_lz4"
+       build_lz4
+    fi
     echo "build_lzo"
     build_lzo
     echo "build_lzf"
