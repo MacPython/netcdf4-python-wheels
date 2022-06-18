@@ -77,11 +77,18 @@ function build_zstd {
     touch zstd-stamp
 }
 
+function build_netcdf {
+    if [ -e netcdf-stamp ]; then return; fi
+    fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+    (cd netcdf-c-${NETCDF_VERSION} \
+        && ./configure --prefix=$BUILD_PREFIX --enable-dap \
+        && make -j4 \
+        && make install)
+    touch netcdf-stamp
+}
+
 function build_hdf5 {
     if [ -e hdf5-stamp ]; then return; fi
-    build_zlib
-    # libaec is a drop-in replacement for szip
-    build_libaec
     local hdf5_url=https://support.hdfgroup.org/ftp/HDF5/releases
     local short=$(echo $HDF5_VERSION | awk -F "." '{printf "%d.%d", $1, $2}')
     fetch_unpack $hdf5_url/hdf5-$short/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz
@@ -152,30 +159,21 @@ function build_hdf5 {
     fi
 }
 
-function build_netcdf {
-    if [ -e netcdf-stamp ]; then return; fi
-    build_hdf5
-    build_curl
-    fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
-    (cd netcdf-c-${NETCDF_VERSION} \
-        && ./configure --prefix=$BUILD_PREFIX --enable-dap \
-        && make -j4 \
-        && make install)
-    touch netcdf-stamp
-}
-
 function build_libs {
-    build_hdf5
-    build_curl2
-    if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
-       export CFLAGS="-std=gnu99 -Wl,-strip-all"
-    fi
+    build_zlib
     build_lz4
     build_lzo
     build_lzf
     build_zstd
     build_bzip2
     build_blosc
+    # libaec is a drop-in replacement for szip
+    build_libaec
+    build_hdf5
+    build_curl2
+    if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
+       export CFLAGS="-std=gnu99 -Wl,-strip-all"
+    fi
     build_netcdf
 }
 
