@@ -80,9 +80,15 @@ function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
     fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
     (cd netcdf-c-${NETCDF_VERSION} \
-        && ./configure --prefix=$BUILD_PREFIX --enable-dap \
-        && make -j4 \
-        && make install)
+        mkdir build \
+	cd build \
+	cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON  \
+	make -j4 \
+        make install)
+    #(cd netcdf-c-${NETCDF_VERSION} \
+    #    && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
+    #    && make -j4 \
+    #    && make install)
     touch netcdf-stamp
 }
 
@@ -161,16 +167,16 @@ function build_hdf5 {
 function build_libs {
     echo "build_zlib"
     build_zlib
-    if [ -z "$IS_MACOS" ]; then
-       echo "build_lz4"
-       build_lz4
-    fi
+    #echo "build_lz4"
+    #build_lz4
     echo "build_lzo"
     build_lzo
     echo "build_lzf"
     build_lzf
-    echo "build_zstd"
-    build_zstd
+    if [ -z $IS_MACOS ]; then
+       echo "build_zstd"
+       build_zstd
+    fi
     echo "build_bzip2"
     build_bzip2
     echo "build_blosc"
