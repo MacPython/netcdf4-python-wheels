@@ -32,6 +32,7 @@ jobs:
       PKG_NAME: netcdf4-python
       MB_ML_VER: 2014
       BUILD_COMMIT: v1.6.0rel
+      NETCDF_VERSION: 4.9.0
       UNICODE_WIDTH: 32
       PLAT: universal2
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
@@ -57,6 +58,7 @@ jobs:
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV; else echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV; else echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "BUILD_COMMIT=master" >> $GITHUB_ENV; else echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV; fi
+        echo "NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c-${NETCDF_VERSION}/plugins/plugindir" >> $GITHUB_ENV
 
     - name: Pin Numpy version
       run: |

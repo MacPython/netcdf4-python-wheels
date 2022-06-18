@@ -61,7 +61,7 @@ function build_lz4 {
     fetch_unpack https://github.com/lz4/lz4/archive/refs/tags/v${LZ4_VERSION}.tar.gz
     (cd lz4-${LZ4_VERSION} \
         && make \
-        && make install)
+        && make install prefix=$BUILD_PREFIX )
     touch lz4-stamp
 }
  
@@ -72,7 +72,7 @@ function build_zstd {
     fetch_unpack https://github.com/facebook/zstd/releases/download/${root_name}/zstd-${ZSTD_VERSION}.tar.gz
     (cd zstd-${ZSTD_VERSION} \
         && make \
-        && make install)
+	&& make install prefix=$BUILD_PREFIX )
     touch zstd-stamp
 }
 
@@ -178,8 +178,8 @@ function build_libs {
     build_libaec
     echo "build_hdf5"
     build_hdf5
-    echo "build_curl2"
-    build_curl2
+    echo "build_curl"
+    build_curl
     if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
