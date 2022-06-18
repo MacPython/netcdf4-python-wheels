@@ -16,6 +16,7 @@ export CURL_VERSION="7.75.0"
 export LIBAEC_VERSION="1.0.6"
 export ZSTD_VERSION="1.5.2"
 export LZ4_VERSION="1.5.2"
+export BZIP2_VERSION="1.0.8"
 
 
 function build_curl2 {
@@ -151,16 +152,16 @@ function build_hdf5 {
     fi
 }
 
-function build_bzip2 {
-    if [ -n "$IS_MACOS" ]; then return; fi  # OSX has bzip2 libs already
-    if [ -e bzip2-stamp ]; then return; fi
-    echo "Download https://mirrors.kernel.org/sourceware/bzip2/bzip2-${BZIP2_VERSION}.tar.gz"
-    fetch_unpack https://mirrors.kernel.org/sourceware/bzip2/bzip2-${BZIP2_VERSION}.tar.gz
-    tar -tvzf bzip2-${BZIP2_VERSION}.tar.gz
-    (cd bzip2-${BZIP2_VERSION} \
-        && make -f Makefile-libbz2_so \
-        && make install PREFIX=$BUILD_PREFIX)
-    touch bzip2-stamp
+function build_netcdf {
+    if [ -e netcdf-stamp ]; then return; fi
+    build_hdf5
+    build_curl
+    fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+    (cd netcdf-c-${NETCDF_VERSION} \
+        && ./configure --prefix=$BUILD_PREFIX --enable-dap \
+        && make -j4 \
+        && make install)
+    touch netcdf-stamp
 }
 
 function build_libs {
@@ -169,11 +170,11 @@ function build_libs {
     if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
-    build_bzip2
     build_lz4
     build_lzo
     build_lzf
     build_zstd
+    build_bzip2
     build_blosc
     build_netcdf
 }
