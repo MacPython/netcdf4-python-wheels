@@ -15,11 +15,11 @@ export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f8966
 export CURL_VERSION="7.75.0"
 export LIBAEC_VERSION="1.0.6"
 export ZSTD_VERSION="1.5.2"
-export LZ4_VERSION="1.5.2"
+export LZ4_VERSION="1.9.3"
 export BZIP2_VERSION="1.0.8"
 
 
-function build_curl2 {
+function build_curl {
     if [ -e curl-stamp ]; then return; fi
     local flags="--prefix=$BUILD_PREFIX"
     if [ -n "$IS_MACOS" ]; then
@@ -58,11 +58,10 @@ function build_libaec {
 
 function build_lz4 {
     if [ -e lz4-stamp ]; then return; fi
-    local root_name=v${LZ4_VERSION}
-    fetch_unpack https://github.com/lz4/lz4/archive/refs/tags/${root_name}.tar.gz
-    cd lz4-${LZ4_VERSION}
-    make
-    make install
+    fetch_unpack https://github.com/lz4/lz4/archive/refs/tags/v${LZ4_VERSION}.tar.gz
+    (cd lz4-${LZ4_VERSION} \
+        && make \
+        && make install)
     touch lz4-stamp
 }
  
@@ -71,15 +70,14 @@ function build_zstd {
     local root_name=v${ZSTD_VERSION}
     local tar_name=zstd-${root_name}.tar.gz
     fetch_unpack https://github.com/facebook/zstd/releases/download/${root_name}/zstd-${ZSTD_VERSION}.tar.gz
-    cd zstd-${ZSTD_VERSION}
-    make
-    make install
+    (cd zstd-${ZSTD_VERSION} \
+        && make
+        && make install)
     touch zstd-stamp
 }
 
 function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
-    build_curl
     fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
     (cd netcdf-c-${NETCDF_VERSION} \
         && ./configure --prefix=$BUILD_PREFIX --enable-dap \
