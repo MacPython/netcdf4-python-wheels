@@ -18,11 +18,12 @@ export ZSTD_VERSION="1.5.2"
 export LZ4_VERSION="1.9.3"
 export BZIP2_VERSION="1.0.8"
 
-#function build_wheel {
-#    # Set default building method to pip
-#    export NETCDF_PLUGIN_DIR=$BUILD_PREFIX/netcdf-plugins/plugindir
-#    wrap_wheel_builder build_pip_wheel $@
-#}
+# custom version that sets NETCDF_PLUGIN_DIR env var
+function build_wheel {
+    # Set default building method to pip
+    export NETCDF_PLUGIN_DIR=$BUILD_PREFIX/netcdf-plugins
+    wrap_wheel_builder build_pip_wheel $@
+}
 
 
 function build_curl {
@@ -89,7 +90,8 @@ function build_netcdf {
     (cd netcdf-c-${NETCDF_VERSION} \
         && mkdir build \
         && cd build \
-        && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALLDIR=/usr/local/hdf5/lib/plugin \
+	&& export HDF5_PLUGIN_PATH=$BUILD_PREFIX/netcdf-plugins
+        && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALL_DIR=YES \
         && make VERBOSE=1\
         && make install)
     #(cd netcdf-c-${NETCDF_VERSION} \
