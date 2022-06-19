@@ -98,22 +98,22 @@ function build_netcdf {
     fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
     echo "netcdf-c BUILD_PREFIX=${BUILD_PREFIX}"
     # cmake build
-    (cd netcdf-c-${NETCDF_VERSION} \
-        && mkdir build \
-        && cd build \
-        && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-        && mkdir -p $HDF5_PLUGIN_PATH \
-        && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALL_DIR=YES \
-        && make -j4 \
-        && make install \
-        && ls -l $HDF5_PLUGIN_PATH )
-    # autotools build
     #(cd netcdf-c-${NETCDF_VERSION} \
+    #    && mkdir build \
+    #    && cd build \
     #    && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-    #    && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
+    #    && mkdir -p $HDF5_PLUGIN_PATH \
+    #    && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALL_DIR=YES \
     #    && make -j4 \
     #    && make install \
     #    && ls -l $HDF5_PLUGIN_PATH )
+    # autotools build
+    (cd netcdf-c-${NETCDF_VERSION} \
+        && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
+        && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
+        && make -j4 \
+        && make install \
+        && ls -l $HDF5_PLUGIN_PATH )
     touch netcdf-stamp
 }
 
