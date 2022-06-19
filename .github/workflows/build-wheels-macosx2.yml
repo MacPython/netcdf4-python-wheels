@@ -58,7 +58,7 @@ jobs:
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV; else echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV; else echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "BUILD_COMMIT=master" >> $GITHUB_ENV; else echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV; fi
-        echo "NETCDF_PLUGIN_DIR=/Users/runner/work/netcdf4-python-wheels/netcdf4-python-wheels/netcdf-c-${NETCDF_VERSION}/plugins/plugindir" >> $GITHUB_ENV
+        echo "NETCDF_PLUGIN_DIR=/usr/local/hdf5/lib/plugin" >> $GITHUB_ENV
 
     - name: Pin Numpy version
       run: |

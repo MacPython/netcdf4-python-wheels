@@ -18,6 +18,12 @@ export ZSTD_VERSION="1.5.2"
 export LZ4_VERSION="1.9.3"
 export BZIP2_VERSION="1.0.8"
 
+#function build_wheel {
+#    # Set default building method to pip
+#    export NETCDF_PLUGIN_DIR=$BUILD_PREFIX/netcdf-plugins/plugindir
+#    wrap_wheel_builder build_pip_wheel $@
+#}
+
 
 function build_curl {
     if [ -e curl-stamp ]; then return; fi
@@ -80,16 +86,16 @@ function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
     fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
     echo "BUILD_PREFIX=${BUILD_PREFIX}"
+    (cd netcdf-c-${NETCDF_VERSION} \
+        && mkdir build \
+        && cd build \
+        && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALLDIR=/usr/local/hdf5/lib/plugin \
+        && make VERBOSE=1\
+        && make install)
     #(cd netcdf-c-${NETCDF_VERSION} \
-    #    && mkdir build \
-    #    && cd build \
-    #    && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON  \
+    #    && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=/usr/local/hdf5/lib/plugin \
     #    && make -j4 \
     #    && make install)
-    (cd netcdf-c-${NETCDF_VERSION} \
-        && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
-        && make -j4 \
-        && make install)
     touch netcdf-stamp
 }
 

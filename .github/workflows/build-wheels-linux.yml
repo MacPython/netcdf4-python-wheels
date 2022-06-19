@@ -78,7 +78,7 @@ jobs:
         if [ "x32" == "${{ matrix.platform }}" ]; then echo "PLAT=i686" >> $GITHUB_ENV; elif [ "aarch64" == "${{ matrix.platform }}" ]; then echo "PLAT=aarch64" >> $GITHUB_ENV; else echo "PLAT=x86_64" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV; else echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "BUILD_COMMIT=master" >> $GITHUB_ENV; else echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV; fi
-        echo "NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c-${NETCDF_VERSION}/plugins/plugindir" >> $GITHUB_ENV
+        echo "NETCDF_PLUGIN_DIR=/usr/local/hdf5/lib/plugin" >> $GITHUB_ENV
 
     - name: Setup Special Environment variables for Linux AArch64
       if: ${{ matrix.platform == 'aarch64' }}
