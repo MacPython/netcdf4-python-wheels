@@ -83,6 +83,7 @@ function build_lz4 {
 }
  
 function build_zstd {
+    if [ -n "$IS_MACOS" ]; then return; fi  # OSX has zstd already
     if [ -e zstd-stamp ]; then return; fi
     local root_name=v${ZSTD_VERSION}
     local tar_name=zstd-${root_name}.tar.gz
@@ -192,16 +193,12 @@ function build_hdf5 {
 function build_libs {
     echo "build_zlib"
     build_zlib
-    #echo "build_lz4"
-    #build_lz4
     echo "build_lzo"
     build_lzo
     echo "build_lzf"
     build_lzf
-    if [ -z $IS_MACOS ]; then
-       echo "build_zstd"
-       build_zstd
-    fi
+    echo "build_zstd"
+    build_zstd
     echo "build_bzip2"
     build_bzip2
     echo "build_blosc"
@@ -233,7 +230,7 @@ function run_tests {
     ls -l /usr/local/lib
     which python
     cp ../netcdf4-python/test/* .
-    export HDF5_PLUGIN_PATH=${BUILD_PREFIX}/netcdf-plugins
+    #export HDF5_PLUGIN_PATH=${BUILD_PREFIX}/netcdf-plugins
     python run_all.py
 }
 
