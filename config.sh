@@ -26,6 +26,15 @@ function build_wheel {
     wrap_wheel_builder build_pip_wheel $@
 }
 
+# add --verbose to pip
+function pip_opts {
+    if [ -n "$MANYLINUX_URL" ]; then
+        echo "--verbose --find-links $MANYLINUX_URL"
+    else
+        echo "--verbose"
+    fi
+}
+
 
 function build_curl {
     if [ -e curl-stamp ]; then return; fi
