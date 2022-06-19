@@ -101,7 +101,7 @@ function build_netcdf {
     # autotools build
     (cd netcdf-c-${NETCDF_VERSION} \
         && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-        && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
+        && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
         && make -j4 \
         && make install \
         && ls -l $HDF5_PLUGIN_PATH )
