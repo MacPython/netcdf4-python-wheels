@@ -230,7 +230,6 @@ function run_tests {
     ls -l /usr/local/lib
     which python
     cp ../netcdf4-python/test/* .
-    #export HDF5_PLUGIN_PATH=${BUILD_PREFIX}/netcdf-plugins
     python run_all.py
 }
 
