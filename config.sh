@@ -17,6 +17,7 @@ export LIBAEC_VERSION="1.0.6"
 export ZSTD_VERSION="1.5.2"
 export LZ4_VERSION="1.9.3"
 export BZIP2_VERSION="1.0.8"
+export BLOSC_VERSION="1.21.1"
 
 # custom version that sets NETCDF_PLUGIN_DIR env var
 function build_wheel {
