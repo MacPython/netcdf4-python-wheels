@@ -32,7 +32,6 @@ jobs:
       PKG_NAME: netcdf4-python
       MB_ML_VER: 2014
       BUILD_COMMIT: v1.6.0rel
-      NETCDF_VERSION: 4.9.0
       UNICODE_WIDTH: 32
       PLAT: universal2
       MB_PYTHON_VERSION: ${{ matrix.python-version }}

@@ -23,7 +23,6 @@ export BLOSC_VERSION="1.21.1"
 function build_wheel {
     # Set default building method to pip
     export NETCDF_PLUGIN_DIR=${BUILD_PREFIX}/lib/netcdf-plugins
-    echo "NETCDF_PLUGIN_DIR=$NETCDF_PLUGIN_DIR"
     wrap_wheel_builder build_pip_wheel $@
 }
 
@@ -98,7 +97,6 @@ function build_zstd {
 function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
     fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
-    echo "netcdf-c BUILD_PREFIX=${BUILD_PREFIX}"
     # cmake build
     #(cd netcdf-c-${NETCDF_VERSION} \
     #    && mkdir build \
@@ -189,6 +187,21 @@ function build_hdf5 {
         && make install)
     touch hdf5-stamp
     fi
+}
+
+function build_blosc {
+    if [ -e blosc-stamp ]; then return; fi
+    fetch_unpack https://github.com/Blosc/c-blosc/archive/v${BLOSC_VERSION}.tar.gz
+    (cd c-blosc-${BLOSC_VERSION} \
+        && cmake -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX . \
+        && make install)
+    if [ -n "$IS_MACOS" ]; then
+        # Fix blosc library id bug
+        for lib in $(ls ${BUILD_PREFIX}/lib/libblosc*.dylib); do
+            install_name_tool -id $lib $lib
+        done
+    fi
+    touch blosc-stamp
 }
 
 function build_libs {
