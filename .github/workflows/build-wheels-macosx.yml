@@ -102,6 +102,7 @@ jobs:
         clean_code $REPO_DIR $BUILD_COMMIT
         echo "------- BUILD WHEEL --------"
         build_wheel $REPO_DIR $PLAT
+        unzip -l wheelhouse/netCDF4*whl
         echo "------- INSTALL_RUN --------"
         install_run $PLAT
     - name: Upload wheels to release
