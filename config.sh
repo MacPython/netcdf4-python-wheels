@@ -194,7 +194,7 @@ function build_blosc {
     fetch_unpack https://github.com/Blosc/c-blosc/archive/v${BLOSC_VERSION}.tar.gz
     if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
        (cd c-blosc-${BLOSC_VERSION} \
-           && cmake -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX -DDEACTIVATE_SSE2 \
+           && cmake -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX -DDEACTIVATE_SSE2=ON \
            && make install)
     else
        (cd c-blosc-${BLOSC_VERSION} \
