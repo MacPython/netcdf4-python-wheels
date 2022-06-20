@@ -192,9 +192,15 @@ function build_hdf5 {
 function build_blosc {
     if [ -e blosc-stamp ]; then return; fi
     fetch_unpack https://github.com/Blosc/c-blosc/archive/v${BLOSC_VERSION}.tar.gz
-    (cd c-blosc-${BLOSC_VERSION} \
-        && cmake -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX . \
-        && make install)
+    if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
+       (cd c-blosc-${BLOSC_VERSION} \
+           && cmake -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX -DDEACTIVATE_SSE2 \
+           && make install)
+    else
+       (cd c-blosc-${BLOSC_VERSION} \
+           && cmake -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX  \
+           && make install)
+    fi
     if [ -n "$IS_MACOS" ]; then
         # Fix blosc library id bug
         for lib in $(ls ${BUILD_PREFIX}/lib/libblosc*.dylib); do
@@ -224,7 +230,7 @@ function build_libs {
     build_hdf5
     echo "build_curl"
     build_curl
-    if [ -z "$IS_OSX" ] && [ $MB_ML_VER -eq 1 ]; then
+    if [ -z "$IS_OSX" ] && [ $MB_ML_VER == "1" ]; then
        export CFLAGS="-std=gnu99 -Wl,-strip-all"
     fi
     echo "build_netcdf"
