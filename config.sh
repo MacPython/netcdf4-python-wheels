@@ -20,20 +20,20 @@ export BZIP2_VERSION="1.0.8"
 export BLOSC_VERSION="1.21.1"
 
 # custom version that sets NETCDF_PLUGIN_DIR env var
-function build_wheel {
-    # Set default building method to pip
-    export NETCDF_PLUGIN_DIR=${BUILD_PREFIX}/lib/netcdf-plugins
-    wrap_wheel_builder build_pip_wheel $@
-}
+#function build_wheel {
+#    # Set default building method to pip
+#    export NETCDF_PLUGIN_DIR=${BUILD_PREFIX}/lib/netcdf-plugins
+#    wrap_wheel_builder build_pip_wheel $@
+#}
 
 # add --verbose to pip
-function pip_opts {
-    if [ -n "$MANYLINUX_URL" ]; then
-        echo "--verbose --find-links $MANYLINUX_URL"
-    else
-        echo "--verbose"
-    fi
-}
+#function pip_opts {
+#    if [ -n "$MANYLINUX_URL" ]; then
+#        echo "--verbose --find-links $MANYLINUX_URL"
+#    else
+#        echo "--verbose"
+#    fi
+#}
 
 function build_curl {
     if [ -e curl-stamp ]; then return; fi
@@ -107,19 +107,19 @@ function build_netcdf {
     #    && make install \
     #    && ls -l $HDF5_PLUGIN_PATH )
     # autotools build
-    if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
-       unset NETCDF_PLUGIN_DIR
+    #if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
+       #unset NETCDF_PLUGIN_DIR
        (cd netcdf-c-${NETCDF_VERSION} \
            && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
            && make -j4 \
            && make install )
-    else
-       (cd netcdf-c-${NETCDF_VERSION} \
-           && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-           && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
-           && make -j4 \
-           && make install )
-    fi
+    #else
+    #   (cd netcdf-c-${NETCDF_VERSION} \
+    #       && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
+    #       && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
+    #       && make -j4 \
+    #       && make install )
+    #fi
     touch netcdf-stamp
 }
 
@@ -219,16 +219,16 @@ function build_blosc {
 function build_libs {
     echo "build_zlib"
     build_zlib
-    echo "build_lzo"
-    build_lzo
-    echo "build_lzf"
-    build_lzf
-    echo "build_zstd"
-    build_zstd
-    echo "build_bzip2"
-    build_bzip2
-    echo "build_blosc"
-    build_blosc
+    #echo "build_lzo"
+    #build_lzo
+    #echo "build_lzf"
+    #build_lzf
+    #echo "build_zstd"
+    #build_zstd
+    #echo "build_bzip2"
+    #build_bzip2
+    #echo "build_blosc"
+    #build_blosc
     # libaec is a drop-in replacement for szip
     echo "build_libaec"
     build_libaec
