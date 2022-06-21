@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and build
 # manylinux wheels for a variety of python versions and architectures.
 
-name: Build and upload macosx wheels (universal2 and arm64)
+name: Build and upload cross-compiled arm64 macosx wheels
 
 on:
   push:
@@ -33,7 +33,8 @@ jobs:
       MB_ML_VER: 2014
       BUILD_COMMIT: v1.6.0rel
       UNICODE_WIDTH: 32
-      PLAT: universal2
+      #PLAT: universal2
+      PLAT: arm64
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_REPO_SLUG: ${{ github.repository }}
@@ -101,7 +102,6 @@ jobs:
         clean_code $REPO_DIR $BUILD_COMMIT
         echo "------- BUILD WHEEL --------"
         build_wheel $REPO_DIR $PLAT
-        unzip -l wheelhouse/netCDF4*whl
         echo "------- INSTALL_RUN --------"
         install_run $PLAT
     - name: Upload wheels to release
