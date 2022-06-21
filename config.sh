@@ -110,17 +110,15 @@ function build_netcdf {
     if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
        unset NETCDF_PLUGIN_DIR
        (cd netcdf-c-${NETCDF_VERSION} \
-           && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --disable-plugins \
+           && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
            && make -j4 \
            && make install )
     else
-       set +e
        (cd netcdf-c-${NETCDF_VERSION} \
            && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
            && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
            && make -j4 \
            && make install )
-       cat netcdf-c-${NETCDF_VERSION}/config.log
     fi
     touch netcdf-stamp
 }
