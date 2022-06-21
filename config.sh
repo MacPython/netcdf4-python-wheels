@@ -116,13 +116,13 @@ function build_netcdf {
     # autotools build
     if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
        (cd netcdf-c-${NETCDF_VERSION} \
-           && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
+           && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --disable-libxml2 \
            && make -j4 \
            && make install )
     else
        (cd netcdf-c-${NETCDF_VERSION} \
            && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-           && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
+           && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --disable-libxml2 --with-plugin-dir=$HDF5_PLUGIN_PATH \
            && make -j4 \
            && make install )
     fi
