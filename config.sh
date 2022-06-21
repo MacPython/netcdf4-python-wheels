@@ -22,8 +22,12 @@ export BLOSC_VERSION="1.21.1"
 # custom version that sets NETCDF_PLUGIN_DIR env var
 function build_wheel {
     # Set default building method to pip
-    export NETCDF_PLUGIN_DIR=${BUILD_PREFIX}/lib/netcdf-plugins
-    wrap_wheel_builder build_pip_wheel $@
+    if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
+       wrap_wheel_builder build_pip_wheel $@
+    else:
+       export NETCDF_PLUGIN_DIR=${BUILD_PREFIX}/lib/netcdf-plugins
+       wrap_wheel_builder build_pip_wheel $@
+    fi
 }
 
 # add --verbose to pip
@@ -108,7 +112,6 @@ function build_netcdf {
     #    && ls -l $HDF5_PLUGIN_PATH )
     # autotools build
     if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
-       unset NETCDF_PLUGIN_DIR
        (cd netcdf-c-${NETCDF_VERSION} \
            && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
            && make -j4 \
@@ -252,6 +255,9 @@ function run_tests {
     ls -l /usr/local/lib
     which python
     cp ../netcdf4-python/test/* .
+    if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
+        export NO_PLUGINS=1 # plugins not installed for arm64 cross compile
+    fi
     python run_all.py
 }
 

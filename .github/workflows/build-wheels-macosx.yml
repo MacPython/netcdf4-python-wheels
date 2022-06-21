@@ -102,8 +102,8 @@ jobs:
         clean_code $REPO_DIR $BUILD_COMMIT
         echo "------- BUILD WHEEL --------"
         build_wheel $REPO_DIR $PLAT
-        echo "------- INSTALL_RUN --------"
-        install_run $PLAT
+        #echo "------- INSTALL_RUN --------"
+        #install_run $PLAT
     - name: Upload wheels to release
       uses: svenstaro/upload-release-action@v2
       if: github.event_name == 'create'
