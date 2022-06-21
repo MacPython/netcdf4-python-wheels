@@ -22,12 +22,8 @@ export BLOSC_VERSION="1.21.1"
 # custom version that sets NETCDF_PLUGIN_DIR env var
 function build_wheel {
     # Set default building method to pip
-    if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
-       wrap_wheel_builder build_pip_wheel $@
-    else:
-       export NETCDF_PLUGIN_DIR=${BUILD_PREFIX}/lib/netcdf-plugins
-       wrap_wheel_builder build_pip_wheel $@
-    fi
+    export NETCDF_PLUGIN_DIR=${BUILD_PREFIX}/lib/netcdf-plugins
+    wrap_wheel_builder build_pip_wheel $@
 }
 
 # add --verbose to pip
