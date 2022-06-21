@@ -102,7 +102,7 @@ jobs:
         echo "------- BUILD WHEEL --------"
         build_wheel $REPO_DIR $PLAT
         echo "------- INSTALL_RUN --------"
-        install_run $PLAT
+        #install_run $PLAT
     - name: Upload wheels to release
       uses: svenstaro/upload-release-action@v2
       if: github.event_name == 'create'
