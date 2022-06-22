@@ -129,15 +129,17 @@ function build_netcdf {
               && make -j4 \
               && make install )
        fi
-    else
+    else # use cmake for linux since autoconf fails for 4.9.0
+#          && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALL_DIR=YES \
        (cd netcdf-c-${NETCDF_VERSION} \
            && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
            && patch -p0 < CMakeLists.txt.patch \
            && mkdir build \
            && cd build \
            && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
+           && unset HDF5_PLUGIN_PATH
            && mkdir -p $HDF5_PLUGIN_PATH \
-           && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALL_DIR=YES \
+           && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DENABLE_PLUGIN_INSTALL=NO=YES \
            && make -j4 \
            && make install \
            && ls -l $HDF5_PLUGIN_PATH )
