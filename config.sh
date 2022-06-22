@@ -8,7 +8,7 @@ export NO_CDL=1
 # Compile libs for macOS 10.9 or later
 export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.9.0"
-export HDF5_VERSION="1.12.2"
+export HDF5_VERSION="1.12.1"
 # old openssl, since building new version requires perl 5.10.0
 export OPENSSL_ROOT=openssl-1.0.2u
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
@@ -104,30 +104,44 @@ function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
     fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
     # cmake build
-    (cd netcdf-c-${NETCDF_VERSION} \
-        && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
-        && patch -p0 < CMakeLists.txt.patch \
-        && mkdir build \
-        && cd build \
-        && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-        && mkdir -p $HDF5_PLUGIN_PATH \
-        && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALL_DIR=YES \
-        && make -j4 \
-        && make install \
-        && ls -l $HDF5_PLUGIN_PATH )
+    #(cd netcdf-c-${NETCDF_VERSION} \
+    #    && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
+    #    && patch -p0 < CMakeLists.txt.patch \
+    #    && mkdir build \
+    #    && cd build \
+    #    && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
+    #    && mkdir -p $HDF5_PLUGIN_PATH \
+    #    && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALL_DIR=YES \
+    #    && make -j4 \
+    #    && make install \
+    #    && ls -l $HDF5_PLUGIN_PATH )
     # autotools build
-    #if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
-    #   (cd netcdf-c-${NETCDF_VERSION} \
-    #       && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
-    #       && make -j4 \
-    #       && make install )
-    #else
-    #   (cd netcdf-c-${NETCDF_VERSION} \
-    #       && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-    #       && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
-    #       && make -j4 \
-    #       && make install )
-    #fi
+    if [[ ! -z "IS_OSX" ]]; then
+       if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
+          (cd netcdf-c-${NETCDF_VERSION} \
+              && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
+              && make -j4 \
+              && make install )
+       else
+          (cd netcdf-c-${NETCDF_VERSION} \
+              && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
+              && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
+              && make -j4 \
+              && make install )
+       fi
+    else
+       (cd netcdf-c-${NETCDF_VERSION} \
+           && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
+           && patch -p0 < CMakeLists.txt.patch \
+           && mkdir build \
+           && cd build \
+           && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
+           && mkdir -p $HDF5_PLUGIN_PATH \
+           && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALL_DIR=YES \
+           && make -j4 \
+           && make install \
+           && ls -l $HDF5_PLUGIN_PATH )
+    fi
     touch netcdf-stamp
 }
 
