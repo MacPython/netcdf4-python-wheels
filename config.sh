@@ -104,28 +104,30 @@ function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
     fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
     # cmake build
-    #(cd netcdf-c-${NETCDF_VERSION} \
-    #    && mkdir build \
-    #    && cd build \
-    #    && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-    #    && mkdir -p $HDF5_PLUGIN_PATH \
-    #    && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALL_DIR=YES \
-    #    && make -j4 \
-    #    && make install \
-    #    && ls -l $HDF5_PLUGIN_PATH )
+    (cd netcdf-c-${NETCDF_VERSION} \
+        && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
+        && patch -p0 < CMakeLists.txt.patch \
+        && mkdir build \
+        && cd build \
+        && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
+        && mkdir -p $HDF5_PLUGIN_PATH \
+        && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DPLUGIN_INSTALL_DIR=YES \
+        && make -j4 \
+        && make install \
+        && ls -l $HDF5_PLUGIN_PATH )
     # autotools build
-    if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
-       (cd netcdf-c-${NETCDF_VERSION} \
-           && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --disable-libxml2 \
-           && make -j4 \
-           && make install )
-    else
-       (cd netcdf-c-${NETCDF_VERSION} \
-           && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-           && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --disable-libxml2 --with-plugin-dir=$HDF5_PLUGIN_PATH \
-           && make -j4 \
-           && make install )
-    fi
+    #if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
+    #   (cd netcdf-c-${NETCDF_VERSION} \
+    #       && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
+    #       && make -j4 \
+    #       && make install )
+    #else
+    #   (cd netcdf-c-${NETCDF_VERSION} \
+    #       && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
+    #       && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
+    #       && make -j4 \
+    #       && make install )
+    #fi
     touch netcdf-stamp
 }
 
