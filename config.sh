@@ -123,6 +123,12 @@ function build_netcdf {
     # use cmake
     # CMakeLists.txt patch needed for NETCDF_VERSION 4.9.0
     # no plugins installed
+    if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
+    (cd netcdf-c-${NETCDF_VERSION} \
+        && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
+        && make -j4 \
+        && make install )
+    else
     (cd netcdf-c-${NETCDF_VERSION} \
         && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
         && patch -p0 < CMakeLists.txt.patch \
@@ -131,6 +137,7 @@ function build_netcdf {
         && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DENABLE_PLUGIN_INSTALL=NO \
         && make -j4 \
         && make install )
+    fi
     # plugins installed
     #(cd netcdf-c-${NETCDF_VERSION} \
     #    && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
