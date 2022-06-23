@@ -130,6 +130,8 @@ jobs:
         echo "------- BUILD WHEEL --------"
         build_wheel $REPO_DIR $PLAT
         echo "------- INSTALL_RUN --------"
+        echo "check wheel"
+        ls -l ${{ github.workspace }}/wheelhouse
         unzip -l ${{ github.workspace }}/wheelhouse/netCDF4*whl
         install_run $PLAT
     - name: Upload wheels to release
