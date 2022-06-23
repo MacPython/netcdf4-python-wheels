@@ -108,14 +108,15 @@ function build_zstd {
 function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
     fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
-    if [[ -n "IS_OSX" ]]; then
+    if [ -n "$IS_MACOS" ]; then
        if [[ "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
+          # no plugins installed
           (cd netcdf-c-${NETCDF_VERSION} \
               && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
               && make -j4 \
               && make install )
        else
-       # plugins installed
+          # plugins installed
           (cd netcdf-c-${NETCDF_VERSION} \
                && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
                && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
@@ -123,7 +124,9 @@ function build_netcdf {
                && make install )
        fi
     else
+       # use cmake for version 4.9.0 since autotools doesn't work
        # CMakeLists.txt patch needed for NETCDF_VERSION 4.9.0
+       # no plugins installed
        #(cd netcdf-c-${NETCDF_VERSION} \
        #    && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
        #    && patch -p0 < CMakeLists.txt.patch \
