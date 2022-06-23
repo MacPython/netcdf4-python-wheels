@@ -31,6 +31,39 @@ function build_wheel {
     wrap_wheel_builder build_pip_wheel $@
 }
 
+function repair_wheelhouse {
+	# Runs 'auditwheel repair' over all wheels in a directory
+	# If the wheel is not renamed by the repair process,
+	# then the original wheel will be left unmodified
+    local in_dir=$1
+    local out_dir=${2:-$in_dir}
+    for whl in $in_dir/*.whl; do
+        if [[ $whl == *none-any.whl ]]; then  # Pure Python wheel
+            if [ "$in_dir" != "$out_dir" ]; then cp $whl $out_dir; fi
+        else
+            local tmpdir=$(mktemp -d -t)
+            
+            auditwheel show $whl
+
+            auditwheel repair $whl -w $tmpdir/
+            
+            local built=$(find $tmpdir -name *.whl)
+            if [ $(basename $built) == $(basename $whl) ]; then
+                if [ "$in_dir" != "$out_dir" ]; then cp $whl $out_dir; fi
+            else
+                cp $built $out_dir
+                
+                # Remove unfixed if writing into same directory
+                if [ "$in_dir" == "$out_dir" ]; then rm $whl; fi
+            fi
+            rm -rf $tmpdir
+        fi
+    done
+    auditwheel show $out_dir/$built
+    chmod -R a+rwX $out_dir
+}
+
+
 # add --verbose to pip
 function pip_opts {
     if [ -n "$MANYLINUX_URL" ]; then
