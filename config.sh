@@ -280,8 +280,8 @@ function run_tests {
     ls -l /usr/local/lib
     which python
     cp ../netcdf4-python/test/* .
-    if [[ ! -z "IS_OSX"  && "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
-        export NO_PLUGINS=1 # plugins not installed for arm64 cross compile
+    if [[ -z "IS_MACOS" ]]; then
+        export NO_PLUGINS=1 # plugins not installed on linux
     fi
     python run_all.py
 }
