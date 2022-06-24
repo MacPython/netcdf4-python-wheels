@@ -8,7 +8,7 @@ export NO_CDL=1
 # uncomment build_wheel and enable plugin install in build_netcdf.
 # if plugins not include, plugins will not work with these wheels unless user sets 
 # HDF5_PLUGIN_PATH to point to locally installed plugins.
-#export NO_PLUGINS=1
+export NO_PLUGINS=1
 
 # Compile libs for macOS 10.9 or later
 export MACOSX_DEPLOYMENT_TARGET="10.9"
@@ -280,9 +280,6 @@ function run_tests {
     ls -l /usr/local/lib
     which python
     cp ../netcdf4-python/test/* .
-    if [[ -z "IS_MACOS" ]]; then
-        export NO_PLUGINS=1 # plugins not installed on linux
-    fi
     python run_all.py
 }
 
