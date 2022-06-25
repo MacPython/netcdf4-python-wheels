@@ -19,7 +19,7 @@ export OPENSSL_ROOT=openssl-1.0.2u
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
 export CURL_VERSION="7.75.0"
 export LIBAEC_VERSION="1.0.6"
-export ZSTD_VERSION="1.5.2"
+export ZSTD_VERSION="1.5.0"
 export LZ4_VERSION="1.9.3"
 export BZIP2_VERSION="1.0.8"
 export BLOSC_VERSION="1.21.1"
@@ -131,7 +131,6 @@ function build_netcdf {
        # use autotools, plugins installed
        (cd netcdf-c-${NETCDF_VERSION} \
             && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-            && export ac_cv_sizeof_off_t=8 \
             && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH --disable-libxml2 \
             && make -j4 \
             && make install )
