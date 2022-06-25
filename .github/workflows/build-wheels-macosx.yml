@@ -24,7 +24,8 @@ jobs:
       fail-fast: false
 
       matrix:
-        python-version: [ "3.8", "3.9","3.10" ]
+        #python-version: [ "3.8", "3.9","3.10" ]
+        python-version: [ "3.10" ]
         os: [macos-latest]
         platform: [x86_64]
     env:
@@ -101,7 +102,10 @@ jobs:
         clean_code $REPO_DIR $BUILD_COMMIT
         echo "------- BUILD WHEEL --------"
         build_wheel $REPO_DIR $PLAT
-        echo "------- INSTALL_RUN --------"
+        echo "check wheel"
+        ls -l ${{ github.workspace }}/wheelhouse
+        unzip -l ${{ github.workspace }}/wheelhouse/netCDF4*whl
+        #echo "------- INSTALL_RUN --------"
         #install_run $PLAT
     - name: Upload wheels to release
       uses: svenstaro/upload-release-action@v2
