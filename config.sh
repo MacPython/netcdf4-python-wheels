@@ -131,7 +131,7 @@ function build_netcdf {
        # use autotools, plugins installed
        (cd netcdf-c-${NETCDF_VERSION} \
             && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-            && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
+            && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH --disable-libxml2 \
             && make -j4 \
             && make install )
        # use cmake for version 4.9.0 since autotools doesn't work
