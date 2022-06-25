@@ -107,7 +107,8 @@ function build_zstd {
 
 function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
-    fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+    #fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+    git clone https://github.com/Unidata/netcdf-c netcdf-c-${NETCDF_VERSION}
     if [ -n "$IS_MACOS" ]; then
        if [[ "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
           # no plugins installed
@@ -124,7 +125,7 @@ function build_netcdf {
                && make install )
        fi
     else
-       # plugins installed
+       # use autotools, plugins installed
        (cd netcdf-c-${NETCDF_VERSION} \
             && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
             && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
