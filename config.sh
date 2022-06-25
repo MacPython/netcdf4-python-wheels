@@ -131,6 +131,7 @@ function build_netcdf {
        # use autotools, plugins installed
        (cd netcdf-c-${NETCDF_VERSION} \
             && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
+            && export ac_cv_sizeof_off_t=8 \
             && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH --disable-libxml2 \
             && make -j4 \
             && make install )
@@ -261,8 +262,8 @@ function build_libs {
     build_lzo
     echo "build_lzf"
     build_lzf
-    #echo "build_zstd"
-    #build_zstd
+    echo "build_zstd"
+    build_zstd
     echo "build_bzip2"
     build_bzip2
     echo "build_blosc"
