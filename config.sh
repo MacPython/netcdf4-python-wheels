@@ -261,8 +261,8 @@ function build_libs {
     build_lzo
     echo "build_lzf"
     build_lzf
-    echo "build_zstd"
-    build_zstd
+    #echo "build_zstd"
+    #build_zstd
     echo "build_bzip2"
     build_bzip2
     echo "build_blosc"
