@@ -24,34 +24,34 @@ jobs:
       fail-fast: false
 
       matrix:
-        #python-version: [ "3.10"]
-        #os: [ubuntu-latest]
-        #platform: [x64]
-        python-version: [ "3.6", "3.7", "3.8", "3.9", "3.10" ]
+        python-version: [ "3.10"]
         os: [ubuntu-latest]
-        platform: [x64, x32]
-        include:
-          - python-version: "3.6"
-            os: ubuntu-latest
-            platform: aarch64
-          - python-version: "3.7"
-            os: ubuntu-latest
-            platform: aarch64
-          - python-version: "3.8"
-            os: ubuntu-latest
-            platform: aarch64
-          - python-version: "3.9"
-            os: ubuntu-latest
-            platform: aarch64
-          - python-version: "3.10"
-            os: ubuntu-latest
-            platform: aarch64
+        platform: [x64]
+        #python-version: [ "3.6", "3.7", "3.8", "3.9", "3.10" ]
+        #os: [ubuntu-latest]
+        #platform: [x64, x32]
+        #include:
+        #  - python-version: "3.6"
+        #    os: ubuntu-latest
+        #    platform: aarch64
+        #  - python-version: "3.7"
+        #    os: ubuntu-latest
+        #    platform: aarch64
+        #  - python-version: "3.8"
+        #    os: ubuntu-latest
+        #    platform: aarch64
+        #  - python-version: "3.9"
+        #    os: ubuntu-latest
+        #    platform: aarch64
+        #  - python-version: "3.10"
+        #    os: ubuntu-latest
+        #    platform: aarch64
 
     env:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
-      MB_ML_VER: 2014
-      BUILD_COMMIT: v1.6.0rel
+      MB_ML_VER: _2_24
+      BUILD_COMMIT: test_plugins
       UNICODE_WIDTH: 32
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
