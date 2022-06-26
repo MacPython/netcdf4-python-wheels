@@ -19,7 +19,7 @@ export OPENSSL_ROOT=openssl-1.0.2u
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
 export CURL_VERSION="7.75.0"
 export LIBAEC_VERSION="1.0.6"
-export ZSTD_VERSION="1.5.0"
+export ZSTD_VERSION="1.5.2"
 export LZ4_VERSION="1.9.3"
 export BZIP2_VERSION="1.0.8"
 export BLOSC_VERSION="1.21.1"
@@ -92,16 +92,16 @@ function build_zstd {
     local root_name=v${ZSTD_VERSION}
     local tar_name=zstd-${root_name}.tar.gz
     fetch_unpack https://github.com/facebook/zstd/releases/download/${root_name}/zstd-${ZSTD_VERSION}.tar.gz
-    #(cd zstd-${ZSTD_VERSION} \
-    #    && cd build \
-    #    && mkdir build \
-    #    && cd build \
-    #    && cmake ../cmake -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX  \
-    #    && make \
-    #    && make install )
     (cd zstd-${ZSTD_VERSION} \
+        && cd build \
+        && mkdir build \
+        && cd build \
+        && cmake ../cmake -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX  \
         && make \
-	    && make install prefix=$BUILD_PREFIX )
+        && make install )
+    #(cd zstd-${ZSTD_VERSION} \
+    #    && make \
+    #    && make install prefix=$BUILD_PREFIX )
     touch zstd-stamp
 }
 
