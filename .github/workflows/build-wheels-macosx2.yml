@@ -65,11 +65,7 @@ jobs:
           echo "NP_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
         elif [ "$MB_PYTHON_VERSION" == '3.7' ]; then
           echo "NP_DEP=$(echo numpy==1.17.3)" >> $GITHUB_ENV;
-        elif [ "$MB_PYTHON_VERSION" == '3.8' ]; then
-          echo "NP_DEP=$(echo oldest-supported-numpy)" >> $GITHUB_ENV;
-        elif [ "$MB_PYTHON_VERSION" == '3.9' ]; then
-          echo "NP_DEP=$(echo oldest-supported-numpy)" >> $GITHUB_ENV;
-        elif [ "$MB_PYTHON_VERSION" == '3.10' ]; then
+        else [ "$MB_PYTHON_VERSION" == '3.8' ]; then
           echo "NP_DEP=$(echo oldest-supported-numpy)" >> $GITHUB_ENV;
         else
           echo "None of the defined python version, use default"
