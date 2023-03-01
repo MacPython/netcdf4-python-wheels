@@ -128,8 +128,8 @@ function build_netcdf {
        # CMakeLists.txt patch needed for NETCDF_VERSION 4.9.0
        # no plugins installed
        (cd netcdf-c-${NETCDF_VERSION} \
-           && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
-           && patch -p0 < CMakeLists.txt.patch \
+       #   && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
+       #   && patch -p0 < CMakeLists.txt.patch \
            && mkdir build \
            && cd build \
            && cmake ../ -DCMAKE_INSTALL_PREFIX=${BUILD_PREFIX} -DENABLE_NETCDF_4=ON -DENABLE_DAP=ON -DBUILD_SHARED_LIBS=ON -DENABLE_PLUGIN_INSTALL=NO \
