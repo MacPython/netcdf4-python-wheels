@@ -15,7 +15,7 @@ export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.9.1"
 export HDF5_VERSION="1.12.2"
 # old openssl, since building new version requires perl 5.10.0
-export OPENSSL_ROOT=openssl-1.0.2u
+export OPENSSL_ROOT=openssl-1.1.1s
 export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
 export CURL_VERSION="7.75.0"
 export LIBAEC_VERSION="1.0.6"
