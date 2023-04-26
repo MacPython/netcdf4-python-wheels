@@ -15,8 +15,8 @@ export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.9.1"
 export HDF5_VERSION="1.12.2"
 # old openssl, since building new version requires perl 5.10.0
-#export OPENSSL_ROOT=openssl-1.1.1s
-#export OPENSSL_HASH=ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16
+export OPENSSL_ROOT=openssl-3.0.1  
+export OPENSSL_HASH=c311ad853353bce796edad01a862c50a8a587f62e7e2100ef465ab53ec9b06d1
 export CURL_VERSION="8.0.1"
 export LIBAEC_VERSION="1.0.6"
 export ZSTD_VERSION="1.5.2"
@@ -40,25 +40,25 @@ function pip_opts {
     fi
 }
 
-function build_curl {
-    if [ -e curl-stamp ]; then return; fi
-    local flags="--prefix=$BUILD_PREFIX"
-    if [ -n "$IS_MACOS" ]; then
-        flags="$flags --with-darwinssl"
-    else  # manylinux
-        flags="$flags --with-ssl"
-        build_openssl
-    fi
-    flags="$flags --without-brotli --without-nghttp2 --without-zstd --without-librtmp --without-libidn2"
-    fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
-    (cd curl-${CURL_VERSION} \
-        && if [ -z "$IS_MACOS" ]; then \
-        LIBS=-ldl ./configure $flags; else \
-        ./configure $flags; fi\
-        && make -j4 \
-        && make install)
-    touch curl-stamp
-}
+#function build_curl {
+#    if [ -e curl-stamp ]; then return; fi
+#    local flags="--prefix=$BUILD_PREFIX"
+#    if [ -n "$IS_MACOS" ]; then
+#        flags="$flags --with-darwinssl"
+#    else  # manylinux
+#        flags="$flags --with-ssl"
+#        build_openssl
+#    fi
+#    flags="$flags --without-brotli --without-nghttp2 --without-zstd --without-librtmp --without-libidn2"
+#    fetch_unpack https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz
+#    (cd curl-${CURL_VERSION} \
+#        && if [ -z "$IS_MACOS" ]; then \
+#        LIBS=-ldl ./configure $flags; else \
+#        ./configure $flags; fi\
+#        && make -j4 \
+#        && make install)
+#    touch curl-stamp
+#}
 
 function build_libaec {
     if [ -e libaec-stamp ]; then return; fi
@@ -281,7 +281,7 @@ function run_tests {
     which python
     cp ../netcdf4-python/test/* .
     python run_all.py
-    # add test for issue #1246
+    # add test for issue #1246 (opendap with ssl)
     filename='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide//m2.hamtide11a.nc'
     python -c "from netCDF4 import Dataset; nc=Dataset(\"${filename}\"); print(nc)"
 }
