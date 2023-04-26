@@ -50,7 +50,7 @@ jobs:
     env:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
-      MB_ML_VER: _2_24
+      MB_ML_VER: _2_28
       #MB_ML_VER: 2014
       BUILD_COMMIT: v1.6.3rel
       UNICODE_WIDTH: 32
