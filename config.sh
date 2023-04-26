@@ -14,9 +14,9 @@ export NO_PLUGINS=1
 export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.9.1"
 export HDF5_VERSION="1.12.2"
-# old openssl, since building new version requires perl 5.10.0
-export OPENSSL_ROOT=openssl-3.0.1  
-export OPENSSL_HASH=c311ad853353bce796edad01a862c50a8a587f62e7e2100ef465ab53ec9b06d1
+# can't use openssl 3, since building new version requires perl 5.10.0
+export OPENSSL_ROOT=openssl-1.1.1t 
+export OPENSSL_HASH=8dee9b24bdb1dcbf0c3d1e9b02fb8f6bf22165e807f45adeb7c9677536859d3b
 export CURL_VERSION="8.0.1"
 export LIBAEC_VERSION="1.0.6"
 export ZSTD_VERSION="1.5.2"
@@ -282,6 +282,6 @@ function run_tests {
     cp ../netcdf4-python/test/* .
     python run_all.py
     # add test for issue #1246 (opendap with ssl)
-    filename='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide//m2.hamtide11a.nc'
-    python -c "from netCDF4 import Dataset; nc=Dataset(\"${filename}\"); print(nc)"
+    URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
+    python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
 }
