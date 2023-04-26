@@ -48,9 +48,9 @@ function build_curl {
         flags="$flags --with-darwinssl"
     else  # manylinux
         flags="$flags --with-ssl"
-        #yum_install perl-IPC-Cmd
-	#yum_install perl-Pod-Html
-	yum_install perl-core
+        yum_install perl-IPC-Cmd
+	yum_install perl-Pod-Html
+	#yum_install perl-core # doesn't work?
         build_openssl
     fi
     flags="$flags --without-zstd"
