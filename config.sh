@@ -49,6 +49,9 @@ function build_curl {
         flags="$flags --with-darwinssl"
     else  # manylinux
         flags="$flags --with-ssl"
+        if [[ $MB_ML_VER == "_2_28" ]]; then
+	   dnf install perl-5.30.1
+        fi
         build_openssl
     fi
     flags="$flags --without-zstd"
