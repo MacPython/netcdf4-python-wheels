@@ -51,7 +51,7 @@ function build_curl {
         flags="$flags --with-ssl"
         if [[ $MB_ML_VER == "_2_28" ]]; then
            perl -v
-	   yum_install perl-Data-Dumper
+	   yum_install perl-IPC-Cmd
         fi
         build_openssl
     fi
