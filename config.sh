@@ -50,7 +50,7 @@ function build_curl {
     else  # manylinux
         flags="$flags --with-ssl"
         if [[ $MB_ML_VER == "_2_28" ]]; then
-	   dnf install perl-5.30.1
+	   yum_install perl-Data-Dumper
         fi
         build_openssl
     fi
