@@ -281,5 +281,7 @@ function run_tests {
     which python
     cp ../netcdf4-python/test/* .
     python run_all.py
+    # add test for issue #1246
+    filename='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide//m2.hamtide11a.nc'
+    python -c "from netCDF4 import Dataset; nc=Dataset(\"${filename}\"); print(nc)"
 }
-
