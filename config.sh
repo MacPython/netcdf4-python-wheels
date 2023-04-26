@@ -14,7 +14,6 @@ export NO_PLUGINS=1
 export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.9.1"
 export HDF5_VERSION="1.12.2"
-# can't use openssl 3, since building new version requires perl 5.10.0
 #export OPENSSL_ROOT=openssl-1.1.1t 
 #export OPENSSL_HASH=8dee9b24bdb1dcbf0c3d1e9b02fb8f6bf22165e807f45adeb7c9677536859d3b
 export OPENSSL_ROOT=openssl-3.0.1   
@@ -49,10 +48,9 @@ function build_curl {
         flags="$flags --with-darwinssl"
     else  # manylinux
         flags="$flags --with-ssl"
-        if [[ $MB_ML_VER == "_2_28" ]]; then
-           perl -v
-	   yum_install perl-IPC-Cmd
-        fi
+        #yum_install perl-IPC-Cmd
+	#yum_install perl-Pod-Html
+	yum_install perl-core
         build_openssl
     fi
     flags="$flags --without-zstd"
@@ -287,7 +285,7 @@ function run_tests {
     which python
     cp ../netcdf4-python/test/* .
     python run_all.py
-    # add test for issue #1246 (opendap with ssl)
+    # add test for netcdf4-python issue #1246 (opendap with ssl)
     URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
     python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
 }
