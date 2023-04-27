@@ -157,13 +157,12 @@ function build_netcdf {
        #    && ls -l $HDF5_PLUGIN_PATH )
     fi
     # test curl ssl support
-    if [ ! -n "$IS_MACOS" ]; then
-    URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
-    export CURLOPT_VERBOSE=1
-    export LD_LIBRARY_PATH="${BUILD_PREFIX}/lib:${LD_LIBRARY_PATH}"
-    ls -l ${BUILD_PREFIX}/lib
-    ${BUILD_PREFIX}/bin/ncdump -h $URL
-    fi
+    #if [ ! -n "$IS_MACOS" ]; then
+    #   URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
+    #   export CURLOPT_VERBOSE=1
+    #   export LD_LIBRARY_PATH="${BUILD_PREFIX}/lib:${LD_LIBRARY_PATH}"
+    #   ${BUILD_PREFIX}/bin/ncdump -h $URL
+    #fi
     touch netcdf-stamp
 }
 
@@ -302,7 +301,8 @@ function run_tests {
        URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
        export CURLOPT_VERBOSE=1
        ls -l /etc/ssl
-       export SSL_CERT_DIR=/etc/ssl/certs
+       echo "HTTP.SSL.CAPATH=/etc/ssl/certs" > ~/.ncrc
+       cat ~/.ncrc
        python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
     #fi
 }
