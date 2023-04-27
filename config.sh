@@ -156,6 +156,10 @@ function build_netcdf {
        #    && make install \
        #    && ls -l $HDF5_PLUGIN_PATH )
     fi
+    # test curl ssl support
+    URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
+    export CURLOPT_VERBOSE=1
+    ${BUILD_PREFIX}/bin/ncdump -h $URL
     touch netcdf-stamp
 }
 
@@ -287,7 +291,6 @@ function run_tests {
     echo $PATH
     ls -l /usr/local/lib
     which python
-    which ncdump
     cp ../netcdf4-python/test/* .
     python run_all.py
     # add test for netcdf4-python issue #1246 (opendap with ssl)
@@ -295,6 +298,5 @@ function run_tests {
        URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
        export CURLOPT_VERBOSE=1
        python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
-       ${BUILD_PREFIX}/bin/ncdump -h $URL
     #fi
 }
