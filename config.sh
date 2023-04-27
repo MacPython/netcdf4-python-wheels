@@ -50,6 +50,7 @@ function build_curl {
          flags="$flags --with-ssl"
     #    yum_install perl-IPC-Cmd
     #    yum_install perl-Pod-Html
+         yum_install wget
 	 wget https://curl.se/ca/cacert.pem
 	 mkdir -p ${BUILD_PREFIX}/ssl
 	 mv cacert.pem ${BUILD_PREFIX}/ssl
