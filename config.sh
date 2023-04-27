@@ -300,9 +300,9 @@ function run_tests {
     #if [ -n "$IS_MACOS" ]; then # for now only run on MacOS since linux fails
        URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
        export CURLOPT_VERBOSE=1
-       ls -l /etc/ssl
-       echo "HTTP.SSL.CAPATH=/etc/ssl/certs" > ~/.ncrc
-       cat ~/.ncrc
+       #echo "HTTP.SSL.CAPATH=/etc/ssl/certs" > ~/.ncrc
+       #cat ~/.ncrc
+       export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
        python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
     #fi
 }
