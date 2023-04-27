@@ -45,11 +45,12 @@ function build_curl {
     if [ -e curl-stamp ]; then return; fi
     local flags="--prefix=$BUILD_PREFIX"
     if [ -n "$IS_MACOS" ]; then
-        flags="$flags --with-darwinssl"
+         flags="$flags --with-darwinssl"
     else  # manylinux
          flags="$flags --with-ssl"
     #    yum_install perl-IPC-Cmd
     #    yum_install perl-Pod-Html
+         yum_install ca-certificates
          build_openssl
     fi
     flags="$flags --without-zstd"
