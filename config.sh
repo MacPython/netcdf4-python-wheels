@@ -290,6 +290,7 @@ function run_tests {
     cp ../netcdf4-python/test/* .
     python run_all.py
     # add test for netcdf4-python issue #1246 (opendap with ssl)
-    #URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
+    URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
     #python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
+    ncdump -h $URL
 }
