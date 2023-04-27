@@ -45,7 +45,7 @@ function build_curl {
     if [ -e curl-stamp ]; then return; fi
     local flags="--prefix=$BUILD_PREFIX --disable-ldap"
     if [ -n "$IS_MACOS" ]; then
-         flags="$flags --with-darwinssl"
+         flags="$flags --with-secure-transport"
     else  # manylinux
          flags="$flags --with-openssl=${BUILD_PREFIX}"
     #    flags="$flags --with-openssl=${BUILD_PREFIX} --with-ca-bundle=${BUILD_PREFIX}/ssl/cacert.pem"
