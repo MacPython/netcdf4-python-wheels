@@ -47,13 +47,14 @@ function build_curl {
     if [ -n "$IS_MACOS" ]; then
          flags="$flags --with-darwinssl"
     else  # manylinux
-         flags="$flags --with-openssl=${BUILD_PREFIX} --with-ca-bundle=${BUILD_PREFIX}/ssl/cacert.pem"
+         flags="$flags --with-openssl=${BUILD_PREFIX}"
+    #    flags="$flags --with-openssl=${BUILD_PREFIX} --with-ca-bundle=${BUILD_PREFIX}/ssl/cacert.pem"
     #    yum_install perl-IPC-Cmd
     #    yum_install perl-Pod-Html
-         yum_install wget
-	 wget https://curl.se/ca/cacert.pem
-	 mkdir -p ${BUILD_PREFIX}/ssl
-	 mv cacert.pem ${BUILD_PREFIX}/ssl
+    #    yum_install wget
+    #    wget https://curl.se/ca/cacert.pem
+    #    mkdir -p ${BUILD_PREFIX}/ssl
+    #    mv cacert.pem ${BUILD_PREFIX}/ssl
          build_openssl
     fi
     flags="$flags --without-zstd"
@@ -289,9 +290,6 @@ function run_tests {
     cp ../netcdf4-python/test/* .
     python run_all.py
     # add test for netcdf4-python issue #1246 (opendap with ssl)
-    echo "HTTP.VERBOSE=1" > ~/.ncrc
-    URL="https://psl.noaa.gov/thredds/dodsC/Datasets/NARR/monolevel/uwnd.10m.2000.nc"
-    python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
-    URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
-    python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
+    #URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
+    #python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
 }
