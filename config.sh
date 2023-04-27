@@ -157,9 +157,12 @@ function build_netcdf {
        #    && ls -l $HDF5_PLUGIN_PATH )
     fi
     # test curl ssl support
+    if [[ -z "IS_OSX" ]]; then
     URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
     export CURLOPT_VERBOSE=1
+    export LD_LIBRARY_PATH=${BUILD_PREFIX}/lib
     ${BUILD_PREFIX}/bin/ncdump -h $URL
+    fi
     touch netcdf-stamp
 }
 
