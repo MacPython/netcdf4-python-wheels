@@ -45,11 +45,14 @@ function build_curl {
     if [ -e curl-stamp ]; then return; fi
     local flags="--prefix=$BUILD_PREFIX"
     if [ -n "$IS_MACOS" ]; then
-         flags="$flags --with-darwinssl"
+         flags="$flags --with-darwinssl --with-ca-bundle=${BUILD_PREFIX}/ssl/cacert.pem"
     else  # manylinux
          flags="$flags --with-ssl"
     #    yum_install perl-IPC-Cmd
     #    yum_install perl-Pod-Html
+	 wget https://curl.se/ca/cacert.pem
+	 mkdir -p ${BUILD_PREFIX}/ssl
+	 mv cacert.pem ${BUILD_PREFIX}/ssl
          build_openssl
     fi
     flags="$flags --without-zstd"
