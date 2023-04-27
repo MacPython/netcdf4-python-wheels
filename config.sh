@@ -43,11 +43,11 @@ function pip_opts {
 
 function build_curl {
     if [ -e curl-stamp ]; then return; fi
-    local flags="--prefix=$BUILD_PREFIX"
+    local flags="--prefix=$BUILD_PREFIX --disable-ldap"
     if [ -n "$IS_MACOS" ]; then
-         flags="$flags --with-darwinssl --with-ca-bundle=${BUILD_PREFIX}/ssl/cacert.pem"
+         flags="$flags --with-darwinssl"
     else  # manylinux
-         flags="$flags --with-ssl"
+         flags="$flags --with-openssl=${BUILD_PREFIX} --with-ca-bundle=${BUILD_PREFIX}/ssl/cacert.pem"
     #    yum_install perl-IPC-Cmd
     #    yum_install perl-Pod-Html
          yum_install wget
