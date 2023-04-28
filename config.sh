@@ -292,8 +292,8 @@ function run_tests {
     URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
     if [ -z "$IS_MACOS" ]; then  # only needed for Linux
        # these should work, but don't
-       echo "HTTP.SSL.CAINFO=/etc/ssl/certs/ca-certificates.crt" > $HOME/.ncrc
-       echo "HTTP.SSL.CAPATH=/etc/ssl/certs"                    >> $HOME/.ncrc
+       #echo "HTTP.SSL.CAINFO=/etc/ssl/certs/ca-certificates.crt" > $HOME/.daprc
+       echo "HTTP.SSL.CAPATH=/etc/ssl/certs"                    > $HOME/.daprc
        #export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
        #echo "cacert=/etc/ssl/certs/ca-certificates.crt" > $HOME/.curlrc
        # this works
