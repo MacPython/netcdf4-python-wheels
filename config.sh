@@ -290,24 +290,18 @@ function pre_build {
 
 function run_tests {
     # Runs tests on installed distribution from an empty directory
-    pwd
-    echo $PATH
-    ls -l /usr/local/lib
-    which python
     cp ../netcdf4-python/test/* .
     python run_all.py
     # add test for netcdf4-python issue #1246 (opendap with ssl)
-    URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
     export CURLOPT_VERBOSE=1
-    # these don't work
-    #echo "HTTP.SSL.CAINFO=/etc/ssl/certs/ca-certificates.crt" > .ncrc
-    #cat .ncrc
-    #/export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-    #echo "cacert=/etc/ssl/certs/ca-certificates.crt" > $HOME/.curlrc
-    # this works
-    if [ -z "$IS_MACOS" ]; then 
-      mkdir -p /etc/pki/tls/certs
-      cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
+    URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
+    if [ -z "$IS_MACOS" ]; then  # only needed for Linux
+       # these should work, but don't
+       #echo "HTTP.SSL.CAINFO=/etc/ssl/certs/ca-certificates.crt" > .ncrc
+       #export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+       # this works
+       mkdir -p /etc/pki/tls/certs
+       ln /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
     fi
     python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
 }
