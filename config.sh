@@ -302,7 +302,7 @@ function run_tests {
        echo "cacert=/etc/ssl/certs/ca-certificates.crt" > $HOME/.curlrc
        # this works
        #mkdir -p /etc/pki/tls/certs
-       ln -s /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
+       #ln -s /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
     fi
     python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
 }
