@@ -301,10 +301,11 @@ function run_tests {
        URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
        export CURLOPT_VERBOSE=1
        #ls -l /etc/ssl/certs
-       #echo "HTTP.SSL.CAINFO=/etc/ssl/certs/ca-certificates.crt" > ~/.ncrc
-       #cat ~/.ncrc
+       #echo "HTTP.SSL.CAINFO=/etc/ssl/certs/ca-certificates.crt" > .daprc
+       #cat .daprc
        #/export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-       sudo mkdir -p /etc/pki/tls/certs
+       #echo "cacert=/etc/ssl/certs/ca-certificates.crt" > $HOME/.curlrc
+       mkdir -p /etc/pki/tls/certs
        cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
        python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
     #fi
