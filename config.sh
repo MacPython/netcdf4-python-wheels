@@ -47,14 +47,9 @@ function build_curl {
     if [ -n "$IS_MACOS" ]; then
          flags="$flags --with-secure-transport"
     else  # manylinux
-         flags="$flags --with-openssl=${BUILD_PREFIX}"
-    #    flags="$flags --with-openssl=${BUILD_PREFIX} --with-ca-bundle=${BUILD_PREFIX}/ssl/cacert.pem"
-    #    yum_install perl-IPC-Cmd
+         flags="$flags --with-openssl=${BUILD_PREFIX} --without-ca-bundle --without-ca-path"
+    #    yum_install perl-IPC-Cmd # needed for openssl 3+
     #    yum_install perl-Pod-Html
-    #    yum_install wget
-    #    wget https://curl.se/ca/cacert.pem
-    #    mkdir -p ${BUILD_PREFIX}/ssl
-    #    mv cacert.pem ${BUILD_PREFIX}/ssl
          build_openssl
     fi
     flags="$flags --without-zstd"
