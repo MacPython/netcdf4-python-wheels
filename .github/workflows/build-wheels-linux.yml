@@ -52,7 +52,8 @@ jobs:
       PKG_NAME: netcdf4-python
       #MB_ML_VER: _2_28
       MB_ML_VER: 2014
-      BUILD_COMMIT: v1.6.3rel
+      #BUILD_COMMIT: v1.6.3rel
+      BUILD_COMMIT: issue1246
       UNICODE_WIDTH: 32
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}

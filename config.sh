@@ -12,7 +12,7 @@ export NO_PLUGINS=1
 
 # Compile libs for macOS 10.9 or later
 export MACOSX_DEPLOYMENT_TARGET="10.9"
-export NETCDF_VERSION="4.9.1"
+export NETCDF_VERSION="4.9.2"
 export HDF5_VERSION="1.12.2"
 export OPENSSL_ROOT=openssl-1.1.1t 
 export OPENSSL_HASH=8dee9b24bdb1dcbf0c3d1e9b02fb8f6bf22165e807f45adeb7c9677536859d3b
@@ -290,14 +290,14 @@ function run_tests {
     # add test for netcdf4-python issue #1246 (opendap with ssl)
     export CURLOPT_VERBOSE=1
     URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
-    if [ -z "$IS_MACOS" ]; then  # only needed for Linux
-       # these should work, but don't
-       #echo "HTTP.SSL.CAINFO=/etc/ssl/certs/ca-certificates.crt" > $HOME/.ncrc
-       #export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-       #echo "cacert=/etc/ssl/certs/ca-certificates.crt" > $HOME/.curlrc
-       # this works
-       mkdir -p /etc/pki/tls/certs
-       ln -s /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
-    fi
+    #if [ -z "$IS_MACOS" ]; then  # only needed for Linux
+    #   # these should work, but don't
+    #   #echo "HTTP.SSL.CAINFO=/etc/ssl/certs/ca-certificates.crt" > $HOME/.ncrc
+    #   #export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+    #   #echo "cacert=/etc/ssl/certs/ca-certificates.crt" > $HOME/.curlrc
+    #   # this works
+    #   mkdir -p /etc/pki/tls/certs
+    #   ln -s /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
+    #fi
     python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
 }
