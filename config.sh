@@ -114,6 +114,7 @@ function build_netcdf {
     git clone https://github.com/DennisHeimbigner/netcdf-c netcdf-c-${NETCDF_VERSION}
     cd netcdf-c-${NETCDF_VERSION}
     git checkout verifyhost.dmh
+    autoreconf -i
     cd ..
     if [ -n "$IS_MACOS" ]; then
        if [[ "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
