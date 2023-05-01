@@ -110,7 +110,11 @@ function build_zstd {
 
 function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
-    fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+    #$fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+    git clone https://github.com/DennisHeimbigner/netcdf-c netcdf-c-${NETCDF_VERSION}
+    cd netcdf-c-${NETCDF_VERSION}
+    git checkout verifyhost.dmh
+    cd ..
     if [ -n "$IS_MACOS" ]; then
        if [[ "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
           # no plugins installed
@@ -127,11 +131,6 @@ function build_netcdf {
                && make install )
        fi
     else
-       # use cmake for version 4.9.0 since autotools doesn't work
-       # CMakeLists.txt patch needed for NETCDF_VERSION 4.9.0
-       # no plugins installed
-       #   && curl https://raw.githubusercontent.com/MacPython/netcdf4-python-wheels/master/CMakeLists.txt.patch -o CMakeLists.txt.patch \
-       #   && patch -p0 < CMakeLists.txt.patch \
        (cd netcdf-c-${NETCDF_VERSION} \
            && mkdir build \
            && cd build \
@@ -151,13 +150,6 @@ function build_netcdf {
        #    && make install \
        #    && ls -l $HDF5_PLUGIN_PATH )
     fi
-    # test curl ssl support
-    #if [ ! -n "$IS_MACOS" ]; then
-    #   URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
-    #   export CURLOPT_VERBOSE=1
-    #   export LD_LIBRARY_PATH="${BUILD_PREFIX}/lib:${LD_LIBRARY_PATH}"
-    #   ${BUILD_PREFIX}/bin/ncdump -h $URL
-    #fi
     touch netcdf-stamp
 }
 
