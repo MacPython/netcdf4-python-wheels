@@ -111,9 +111,10 @@ function build_zstd {
 function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
     #$fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
-    git clone https://github.com/DennisHeimbigner/netcdf-c netcdf-c-${NETCDF_VERSION}
+    # this has fix for setting CURL path to find SSL certificates
+    git clone https://github.com/Unidata/netcdf-c netcdf-c-${NETCDF_VERSION}
     cd netcdf-c-${NETCDF_VERSION}
-    git checkout verifyhost.dmh
+    git checkout 43b03a4da72dfaaa004adb1a288111c06eaa60ae
     autoreconf -i
     cd ..
     if [ -n "$IS_MACOS" ]; then
@@ -281,16 +282,7 @@ function run_tests {
     cp ../netcdf4-python/test/* .
     python run_all.py
     # add test for netcdf4-python issue #1246 (opendap with ssl)
-    export CURLOPT_VERBOSE=1
+    #export CURLOPT_VERBOSE=1
     URL='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc'
-    #if [ -z "$IS_MACOS" ]; then  # only needed for Linux
-    #   # these should work, but don't
-    #   #echo "HTTP.SSL.CAINFO=/etc/ssl/certs/ca-certificates.crt" > $HOME/.ncrc
-    #   #export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-    #   #echo "cacert=/etc/ssl/certs/ca-certificates.crt" > $HOME/.curlrc
-    #   # this works
-    #   mkdir -p /etc/pki/tls/certs
-    #   ln -s /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
-    #fi
     python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
 }

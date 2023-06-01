@@ -32,7 +32,7 @@ jobs:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
       MB_ML_VER: 2014
-      BUILD_COMMIT: v1.6.3rel
+      BUILD_COMMIT: v1.6.4rel
       UNICODE_WIDTH: 32
       PLAT: arm64
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
