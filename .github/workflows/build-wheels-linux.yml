@@ -74,7 +74,7 @@ jobs:
 
     - name: Setup QEMU
       if: ${{ matrix.platform == 'aarch64' }}
-      uses: docker/setup-qemu-action@v1
+      uses: docker/setup-qemu-action@v2
 
     - name: Setup Environment variables
       run: |
