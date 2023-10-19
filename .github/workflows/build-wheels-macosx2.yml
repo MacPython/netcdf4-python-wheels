@@ -24,15 +24,14 @@ jobs:
       fail-fast: false
 
       matrix:
-        #python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
-        python-version: [ "3.12" ]
+        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
         os: [macos-latest]
         platform: [x86_64]
     env:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
       MB_ML_VER: 2014
-      BUILD_COMMIT: v1.6.4rel
+      BUILD_COMMIT: v1.6.5rel
       UNICODE_WIDTH: 32
       PLAT: x86_64
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
