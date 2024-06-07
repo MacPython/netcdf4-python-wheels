@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and build
 # manylinux wheels for a variety of python versions and architectures.
 
-name: Build and upload cross-compiled arm64 macosx wheels
+name: Build and upload arm64 macosx wheels
 
 on:
   push:
@@ -25,8 +25,8 @@ jobs:
 
       matrix:
         python-version: [ "3.9", "3.10", "3.11", "3.12" ]
-        os: "macos-latest"
-        platform: arm64
+        os: [macos-latest]
+        platform: [arm64]
     env:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
