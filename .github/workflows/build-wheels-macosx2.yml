@@ -31,7 +31,7 @@ jobs:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
       MB_ML_VER: 2014
-      BUILD_COMMIT: v1.6.5rel
+      BUILD_COMMIT: v1.7.0rel
       UNICODE_WIDTH: 32
       PLAT: x86_64
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
@@ -48,7 +48,7 @@ jobs:
       with:
         submodules: recursive
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 

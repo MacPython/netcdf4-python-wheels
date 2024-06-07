@@ -52,7 +52,7 @@ jobs:
       REPO_DIR: netcdf4-python
       PKG_NAME: netcdf4-python
       MB_ML_VER: 2014
-      BUILD_COMMIT: v1.6.5rel
+      BUILD_COMMIT: v1.7.0rel
       UNICODE_WIDTH: 32
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
@@ -63,17 +63,17 @@ jobs:
       MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Setup QEMU
       if: ${{ matrix.platform == 'aarch64' }}
-      uses: docker/setup-qemu-action@v2
+      uses: docker/setup-qemu-action@v3
 
     - name: Setup Environment variables
       run: |
