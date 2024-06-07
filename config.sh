@@ -11,7 +11,7 @@ export NO_CDL=1
 export NO_PLUGINS=1
 
 # Compile libs for macOS 10.9 or later
-export MACOSX_DEPLOYMENT_TARGET="10.9"
+#export MACOSX_DEPLOYMENT_TARGET="10.9"
 export NETCDF_VERSION="4.9.2"
 export HDF5_VERSION="1.12.2"
 export OPENSSL_ROOT=openssl-1.1.1t 
