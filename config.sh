@@ -117,22 +117,22 @@ function build_netcdf {
     git checkout 43b03a4da72dfaaa004adb1a288111c06eaa60ae
     autoreconf -i
     cd ..
-    if [ -n "$IS_MACOS" ]; then
-       if [[ "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
-          # no plugins installed
-          (cd netcdf-c-${NETCDF_VERSION} \
-              && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
-              && make -j4 \
-              && make install )
-       else
-          # plugins installed
-          (cd netcdf-c-${NETCDF_VERSION} \
-               && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
-               && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
-               && make -j4 \
-               && make install )
-       fi
-    else
+    #if [ -n "$IS_MACOS" ]; then
+    #   if [[ "$PLAT" = "arm64" ]] && [[ "$CROSS_COMPILING" = "1" ]]; then
+    #      # no plugins installed
+    #      (cd netcdf-c-${NETCDF_VERSION} \
+    #          && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap \
+    #          && make -j4 \
+    #          && make install )
+    #   else
+    #      # plugins installed
+    #      (cd netcdf-c-${NETCDF_VERSION} \
+    #           && export HDF5_PLUGIN_PATH=$BUILD_PREFIX/lib/netcdf-plugins \
+    #           && ./configure --prefix=$BUILD_PREFIX --enable-netcdf-4 --enable-shared --enable-dap --with-plugin-dir=$HDF5_PLUGIN_PATH \
+    #           && make -j4 \
+    #           && make install )
+    #   fi
+    #else
        (cd netcdf-c-${NETCDF_VERSION} \
            && mkdir build \
            && cd build \
@@ -151,7 +151,7 @@ function build_netcdf {
        #    && make -j4 \
        #    && make install \
        #    && ls -l $HDF5_PLUGIN_PATH )
-    fi
+    #fi
     touch netcdf-stamp
 }
 
@@ -251,16 +251,16 @@ function build_blosc {
 function build_libs {
     echo "build_zlib"
     build_zlib
-    echo "build_lzo"
-    build_lzo
-    echo "build_lzf"
-    build_lzf
-    echo "build_zstd"
-    build_zstd
-    echo "build_bzip2"
-    build_bzip2
-    echo "build_blosc"
-    build_blosc
+#   echo "build_lzo"
+#   build_lzo
+#   echo "build_lzf"
+#   build_lzf
+#   echo "build_zstd"
+#   build_zstd
+#   echo "build_bzip2"
+#   build_bzip2
+#   echo "build_blosc"
+#   build_blosc
     echo "build_libaec"
     build_libaec
     echo "build_hdf5"
