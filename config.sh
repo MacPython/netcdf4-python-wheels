@@ -112,7 +112,7 @@ function build_netcdf {
     if [ -e netcdf-stamp ]; then return; fi
     #$fetch_unpack https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
     # this has fix for setting CURL path to find SSL certificates
-    git clone https://github.com/Unidata/netcdf-c netcdf-c-${NETCDF_VERSION}
+    git clone --recursive https://github.com/Unidata/netcdf-c netcdf-c-${NETCDF_VERSION}
     cd netcdf-c-${NETCDF_VERSION}
     git checkout 43b03a4da72dfaaa004adb1a288111c06eaa60ae
     autoreconf -i
